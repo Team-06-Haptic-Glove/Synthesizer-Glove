@@ -1,0 +1,108 @@
+Glove function code structure
+
+--Declarations
+Libraries
+
+Inputs
+    --Flex Sensor Readings
+    Flex_ThumbR(1), Flex_PointR(2), Flex_MidR(3), Flex_ThumbL(4), Flex_PointL(5), Flex_MidL(6): Value from R -> Bent_Val
+        R: Variable starting reference point based on resistor used
+        Bent_Val: Value used to dictate when finger is fully bent --> Further bending stays at Bent_Val
+        
+    --Accelerometer Readings
+    X_Accel, Y_Accel, Z_Accel: The value of current acceleration in 3 dimensions
+        Trigger_Val: The value that dictates when acceleration is sufficient to be an input
+        
+    --Gyrometer Readings
+        X_Rot, Y_Rot, Z_Rot: Value of angular acceleration in 3 dimentions
+        
+Outputs
+Functions
+
+    --Calibration
+    
+    
+    
+    
+    --Volume: Control the value of audio volume
+    --Uses 1 flex sensor input, Louder as finger is bent
+        Volume(Flex_ThumbL, R, Bent_Val) {
+            Max = Bent_val;
+            Min = R;
+            
+            Range = abs(Max - Min)
+                If (Flex_ThumbL > R) {
+                    Flex_ThumbL = R;
+                };
+                If (Flex_ThumbL < Bent_Val) {
+                    Flex_ThumbL = Bent_Val;
+                };
+            Current_Vol = abs(Flex_ThumbL - Vol_Min)
+                
+            Vol_Set(%) = (Current_Vol / Range) * 100%
+            return Vol_Set;
+        }
+    
+    --Knob: Controls shit w/ rotation
+    --Uses gyrometer
+        Knob(whatever, current_rot_pos){
+        
+            updateTime = 1 --ns
+            turning = true;
+            reference = current_rot_pos;
+            
+            while turning = true {
+                change, turning = rotation(updateTime);
+                whatever += (reference + change);
+                If whatever > whatever_Max {
+                    whatever = whatever_max;
+                }
+                If whatever < whatever_Min {
+                    whatever = whatever_Min;
+                }
+                    wait(updateTime);
+            }
+            
+        }
+   
+   --Rotation
+        rotation(){
+            Take angular velocity in (x,y,z)
+            Multiply by updateTime
+            If angular velocity is still > 0
+                Return turning = true;
+            else if angular velocity = 0
+                REturn turning = false;
+        }
+        
+   
+   
+   
+    Swipe:
+    Palm Push:
+
+Main
+    Loop: Every N seconds, take a measurement
+    
+    
+    While forever {
+        Current_Volume = Volume(Finger, R, Bent_Val);
+    
+    --when we want to change pitch
+    if (flex sensors are position)
+        knob(pitch, rotation)
+    if (flex sensors are position)
+        knob(tone, rotation)
+        
+        }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
