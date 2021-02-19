@@ -5,9 +5,10 @@ Libraries
 
 Inputs
     --Flex Sensor Readings
-    Flex_ThumbR(1), Flex_PointR(2), Flex_MidR(3), Flex_ThumbL(4), Flex_PointL(5), Flex_MidL(6): Value from R -> Bent_Val
-        R: Variable starting reference point based on resistor used
-        Bent_Val: Value used to dictate when finger is fully bent --> Further bending stays at Bent_Val
+    flex_finger(0,1,2,3,4,5): Current finger readings, Value from R -> Bent_Val 
+        0,1,2 --> Left Hand (Thumb,Pointer,Mid) 3,4,5, --> Right hand (Thumb,Pointer,Mid)
+        R           : Variable starting reference point based on resistor used
+        Bent_Val    : Value used to dictate when finger is fully bent --> Further bending stays at Bent_Val
         
     --Accelerometer Readings
     X_Accel, Y_Accel, Z_Accel: The value of current acceleration in 3 dimensions
@@ -16,32 +17,57 @@ Inputs
     --Gyrometer Readings
         X_Rot, Y_Rot, Z_Rot: Value of angular acceleration in 3 dimentions
         
+    --LEDs
+    --Global Variables
+        R
+        bent_val
+        
 Outputs
 Functions
 
     --Calibration
-    
-    
-    
-    
-    --Volume: Control the value of audio volume
-    --Uses 1 flex sensor input, Louder as finger is bent
-        Volume(Flex_ThumbL, R, Bent_Val) {
-            Max = Bent_val;
-            Min = R;
-            
-            Range = abs(Max - Min)
-                If (Flex_ThumbL > R) {
-                    Flex_ThumbL = R;
-                };
-                If (Flex_ThumbL < Bent_Val) {
-                    Flex_ThumbL = Bent_Val;
-                };
-            Current_Vol = abs(Flex_ThumbL - Vol_Min)
-                
-            Vol_Set(%) = (Current_Vol / Range) * 100%
-            return Vol_Set;
+    --GLove calibrates after 3s --> Have LEDs as visual feedback
+    --Get user to have palm open downwards
+    , parallel to the ground (perhaps set on desk or smth?)
+        calibrate(){
+            --Blink 3 LEDs
+            --Set accelerometer, gyroscope
+                x_accel, y_accel, z_accel = 0;
+                x_Rot, y_rot, z_rot = 0;
+                flex_finger(0..6) = R;
+            --Get LEDs to turn on one at a time over 3s
+        
         }
+    
+    
+    
+    --Flex: Controls shit w/ finger flex
+    --Uses 1 flex sensor input, Louder as finger is bent
+      -- finger_val : The sensor reading from finger
+      -- R          : Maximum value determined by resistor
+      -- bent_val   : Value dictating when finger is max bent
+      
+        flex(finger_val, R, bent_val) {
+            --Create max/min values from start/stop positions
+            --Find the range between the two
+                Max = Bent_val;
+                Min = R;
+                Range = abs(Max - Min)
+            --Ensure flex cannot exceed parameters
+                If (finger_val > R) {
+                    finger_val = R;
+                };
+                If (finger_val < bent_val) {
+                    finger_val = bent_val;
+                };
+            --Adjust current value by subtracting the Min of the range
+                current_val = abs(finger_val - Min)
+            
+            --Set the value of 'input' to be the new flex value
+                new_val = (Current_Vol / Range) * 100%
+                return new_val;
+        }
+        
     
     --Knob: Controls shit w/ rotation
     --Uses gyrometer
@@ -65,6 +91,7 @@ Functions
             
         }
    
+   
    --Rotation
         rotation(){
             Take angular velocity in (x,y,z)
@@ -72,7 +99,7 @@ Functions
             If angular velocity is still > 0
                 Return turning = true;
             else if angular velocity = 0
-                REturn turning = false;
+                Return turning = false;
         }
         
    
@@ -95,14 +122,5 @@ Main
         knob(tone, rotation)
         
         }
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
