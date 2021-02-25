@@ -4,8 +4,8 @@ Glove function code structure
 Libraries
 
 Inputs
-    --Flex Sensor Readings
-    flex_finger(0,1,2,3,4,5): Current finger readings, Value from R -> Bent_Val 
+    --Finger Sensor Readings
+    finger(0,1,2,3,4,5): Current finger readings, Value from R -> Bent_Val 
         0,1,2 --> Left Hand (Thumb,Pointer,Mid) 3,4,5, --> Right hand (Thumb,Pointer,Mid)
         R           : Variable starting reference point based on resistor used
         Bent_Val    : Value used to dictate when finger is fully bent --> Further bending stays at Bent_Val
@@ -36,7 +36,9 @@ Functions
                 x_Rot, y_rot, z_rot = 0;
                 flex_finger(0..6) = R;
             --Get LEDs to turn on one at a time over 3s
-        
+                LED(0) = On; Delay: 1s;
+                LED(1) = On; Delay: 1s;
+                LED(2) = On; Delay: 1s;
         }
     
     
