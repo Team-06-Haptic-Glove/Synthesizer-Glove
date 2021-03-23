@@ -215,13 +215,12 @@ void loop() {
     
     //Display sensor readings
         //Sends Acceleration / Rotation
-        Serial.print("Acceleration (x,y,z): "); Serial.println(accel);
-        Serial.print("Rotation: "); Serial.println(rotation);
+          Serial.print(accel); Serial.print(rotate);
         //Sends Finger Bend
-        Serial.print("Pointer Bend: "); Serial.println(Pointer);
-        Serial.print("Middle Bend: "); Serial.println(Middle);
-        Serial.print("Thumb Bend: "); Serial.println(Thumb);
-
+          Serial.print(Pointer); Serial.print(Middle); Serial.print(Thumb);
+        //Sends Button Updates
+          Serial.print(Map1); Serial.print(Map2); Serial.print(Map3);
+          
     //Reads the serial monitor line for information
         //Sends whatever is read as a bluetooth packet
     if (Serial.available()) {
