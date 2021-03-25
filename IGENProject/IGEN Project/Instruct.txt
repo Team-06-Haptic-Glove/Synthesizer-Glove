@@ -1,0 +1,3 @@
+install node.js
+npm installer
+==> Tone.js, SerialPort.io
