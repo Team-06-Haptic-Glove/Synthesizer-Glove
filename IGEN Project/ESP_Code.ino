@@ -46,9 +46,9 @@ Adafruit_MPU6050 mpu;
 //Outputs
     //LEDs
         int LED = 2; //Calibration Lights
-        
-//Additional Constants
-int Resistor = 1000; //Resistance in Ohms
+
+    int count;
+    bool calibrated;
 
 /*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*/
@@ -64,7 +64,7 @@ int Resistor = 1000; //Resistance in Ohms
         //While Calibrating
         while (calibrated = false){
             //If moving, reset timer
-            while(accel != {0,0,0} || rotate != {0,0,0}{
+            while((accel != [0,0,0]) || (rotate != [0,0,0])){
                 digitalWrite(LED, HIGH);
                 delay(300);
                 digitalWrite(LED, LOW);
@@ -85,14 +85,6 @@ int Resistor = 1000; //Resistance in Ohms
             calibrated = true;
         }
     }
-    
-    //Finger Flex
-        //Value of given aspect changes with the flex of the finger
-    void fingerflex(finger){
-        newVal = analogRead(finger);
-        return newVal;
-    }
-
 /*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*/
 
@@ -157,7 +149,7 @@ void setup() {
                 break;
         }
     mpu.setFilterBandwidth(MPU6050_BAND_5_HZ);
-        Serial.print("Filter bandwidth set to: ")
+        Serial.print("Filter bandwidth set to: ");
         switch (mpu.getFilterBandwidth()) {
             case MPU6050_BAND_260_HZ:
                 Serial.println("260 Hz");
@@ -197,21 +189,25 @@ void setup() {
     //Running code, run eternally
 void loop() {
     //Calibrate when button pressed
-    if (digitalRead(CALI)==HIGH) {
+    if (digitalRead(Cali)==HIGH) {
         calibrate();
     } 
     
     //Get Finger Sensor readings
-        int Pointer = fingerflex(Finger_1);
-        int Middle = fingerflex(Finger_2);
-        int Thumb = fingerflex(Finger_3);
+        int Pointer = analogRead(Finger_1);
+        int Middle = analogRead(Finger_2);
+        int Thumb = analogRead(Finger_3);
     
     //Get Acceleration / Rotation readings
         sensors_event_t a, g, temp;
         mpu.getEvent(&a, &g, &temp);
         
-        accel = {a.acceleration.x, a.acceleration.y, a.acceleration.z};
-        rotate = {g.gyro.x, g.gyro.y, g.gyro.z};
+        accel[0] = a.acceleration.x;
+        accel[1] = a.acceleration.y;
+        accel[2] = a.acceleration.z;
+        rotate[0] = g.gyro.x;
+        rotate[1] = g.gyro.y;
+        rotate[2] = g.gyro.z;
     
     //Display sensor readings
         //Sends Acceleration / Rotation
