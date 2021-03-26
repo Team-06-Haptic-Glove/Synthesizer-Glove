@@ -10,7 +10,7 @@
     body{
         background-image: url(./zAssets/wood.jpeg);
     }
-    span.inputs{
+    span.main{
         position: absolute;
         background-image: url(./zAssets/blackground.jpg);
         background-clip: padding-box;
@@ -27,6 +27,13 @@
         margin: auto;
         overflow: hidden !important;
         font-family: comic sans MS;
+    }
+    span.settings{
+        position: absolute;
+        background-color: transparent;
+        width: 20%;
+        height: 6%;
+        right: 5%;
     }
     div.button1{
         position: absolute;
@@ -150,7 +157,67 @@
         font-size: 24px;;
         text-shadow: 1px 0 black;
     }
-
+    button.notePress{
+        position: inherit;
+        background-image: url(./zAssets/metal.jpeg);
+        border: 5px solid #414647;
+        border-radius: 40px;
+        width: 80px;
+        height: 80px;
+        right: 5%;
+        bottom: 5%;
+        font-size: 10px;
+        font-weight: bold;
+        font-family: comic sans MS;
+        box-shadow: none;
+        outline: none;
+    }
+    button.notePress:active{
+        border-color: #585d5e;
+        box-shadow: none;
+        outline: none;
+    }
+    img.gear{
+        position: absolute;
+        height: 90%;
+        right: 5px
+    }
+    img.links{
+        position: absolute;
+        height: 85%;
+        right: 60px;
+    }
+    div.settings{
+        position: inherit;
+        border: 8px solid #696969;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        background-color: white;
+        width: 150px;
+        height: 300px;
+        right: 5%;
+        top: 100%;
+        z-index: 1;;
+        display: none;
+    }
+    div.references{
+        position: absolute;
+        border: 16px solid #696969;
+        border-radius: 36px;
+        border-bottom-right-radius: 80px;
+        background-color: white;
+        left: 0px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+        width: 90%;
+        height: 80%;
+        z-index: 1;
+        margin: auto;
+        overflow: hidden !important;
+        font-family: comic sans MS;
+        display: none;
+    }
 </style>
 
 <script>
@@ -181,20 +248,83 @@
     var buttonTwo    = references[6];
     var buttonThree  = references[7];
 
+    //Declaring aspect variables
     var volume;
+    var maxVol;
+    var minVol;
+    var hertz;
+    var maxHertz;
+    var minHertz;
+    var looper ;
+    var play;
+
+    var osc;
 
     // mute the output
-    vol.mute = false;
+    var firstTime;
+
+    var showing;
 
 //Functions
+    //loadMe Loads and initializes all variables
+    function loadMe(){
+        showingSet = false;
+        showingRef = false;
+        volume = -15;
+        maxVol = 20;
+        minVol = -15;
+        hertz = 0;
+        maxHertz = 1000;
+        minHertz = 0;
+        play = false;
+        
+        //Initialize new oscillator, done once
+            osc = new Tone.Oscillator(0).toDestination();
+            osc.volume.value = -15;
+    }
+
+
+    //openSettings() Opens up the setting menu
+    function openSettings(){
+        document.getElementById("references").style.display = "none";
+        if (showingSet == false){
+            document.getElementById("settings").style.display = "block";
+            showingSet = true;
+        }
+        else if (showingSet == true){
+            document.getElementById("settings").style.display = "none";
+            showingSet = false;
+        }
+    }
+    //openRefs() Opens up additional references menu
+    function openRefs(){
+        document.getElementById("settings").style.display = "none";
+        if (showingRef == false){
+            document.getElementById("references").style.display = "block";
+            showingRef = true;
+        }
+        else if (showingRef == true){
+            document.getElementById("references").style.display = "none";
+            showingRef = false;
+        }
+    }
+
+
     //setFlex(Finger, Value) Takes in variable value and displays numerically/using bar
     //Finger: The finger which is affecting the bar
     //Value: The variable input created by the flex sensors
     function setFlex(finger, value){
         var setVal = value;
+
         if (finger == pointer){
+            //Adjusts raw volume and set as the actual volume
+                //Declare min/max in decibels
+                volume = ( (minVol) + ( (maxVol-minVol)*(setVal/100) ) );
+                volume = volume.toFixed(1);
+                osc.volume.value = volume;
+            //Update the UI
             document.getElementById("pointerBar").style.width = setVal + "%";
-            document.getElementById("flexNum1").innerHTML = setVal + "%";
+            document.getElementById("flexNum1").innerHTML = volume + "db";
             if (setVal < 30){
                 document.getElementById("pointerBar").style.backgroundColor = '#0AA30C';
             }
@@ -204,13 +334,16 @@
             else if (setVal > 90){
                 document.getElementById("pointerBar").style.backgroundColor = '#E12120';
             }
-
-            //Adjusts raw volume and set as the actual volume
-            volume = setVol(setVal);
         }
         if (finger == middle){
+            //Adjusts Hz of the output oscillator
+                //Declare min/max in hertz
+                hertz = ( (minHertz) + ( (maxHertz-minHertz)*(setVal/100) ) );
+                hertz = hertz.toFixed(1);
+                osc.frequency.value = hertz;
+            //Update the UI
             document.getElementById("middleBar").style.width = setVal + "%";
-            document.getElementById("flexNum2").innerHTML = setVal + "%";
+            document.getElementById("flexNum2").innerHTML = hertz + "hz";
             if (setVal < 30){
                 document.getElementById("middleBar").style.backgroundColor = '#0AA30C';
             }
@@ -220,6 +353,7 @@
             else if (setVal > 90){
                 document.getElementById("middleBar").style.backgroundColor = '#E12120';
             }
+
         }
         if (finger == thumb){
             document.getElementById("thumbBar").style.width = setVal + "%";
@@ -235,39 +369,45 @@
             }
         }
 
-        console.log("Volume set to " + volume);
+        //Clear and display updated values to console
+        console.clear();
+        console.log("Volume set to: " + volume + "db");
+        console.log("Pitch set to: " + hertz + "hz");
     }
     
-    //setVol(value) Takes in the raw value and calibrates it to a volume (in decibels)
-    //Value: The raw percentage value of volume
-    function setVol(value){
-        var max = 20;
-        var min = -15;
-        var adjustedVol = (min) + ((max-min)*(value/100));
-        return adjustedVol;
-    }
-
-    
-    //playNote
+    //playNote Initializes the oscillator, acts as the start/stop button
     function playNote(){
-        //create a synth and connect it to the main output (your speakers)
-        const synth = new Tone.Synth().toDestination();
-
-        //play a middle 'C' for the duration of an 8th note
-        synth.triggerAttackRelease("C4", "1n");
-        synth.volume.value = volume;
+        //If oscillator is off, start it
+        if (play == false){
+            play = true;
+            osc.start();
+        }
+        //If oscillator is playing, stop it
+        else if (play == true){
+            play = false;
+            osc.stop();
+        }
     }
-
 
 </script>
-<body>
-    <span class="inputs">
+<body onload="loadMe()">
+    <span class="settings">
+        <img class="gear" src="./zAssets/settings.png" onclick="openSettings()">
+        <img class="links" src="./zAssets/daDrip.png" onclick="openRefs()">
+        <div class="settings" id="settings">
+            Oh god oh fuck help
+        </div>
+    </span>
+    <div class="references" id="references">
+        Oh what how, alexa play sanctuary guardian
+    </div>
+    <span class="main">
         <div class="flex1">
             <text class="flexLabel">Pointer</text>
             <div class="flexBarOut">
                 <div class="flexBarIn" id="pointerBar"></div>
             </div>
-            <div class="flexNum" id="flexNum1">1%</div>
+            <div class="flexNum" id="flexNum1">uwu</div>
         </div>
             
         <div class="flex2">
@@ -275,7 +415,7 @@
             <div class="flexBarOut">
                 <div class="flexBarIn" id="middleBar"></div>
             </div>
-            <div class="flexNum" id="flexNum2">1%</div>
+            <div class="flexNum" id="flexNum2">o_O</div>
         </div>
             
         <div class="flex3">
@@ -283,7 +423,7 @@
             <div class="flexBarOut">
                 <div class="flexBarIn" id="thumbBar"></div>
             </div>
-            <div class="flexNum" id="flexNum3">1%</div>
+            <div class="flexNum" id="flexNum3">OwO</div>
         </div>
         
         <div class="buttons">
@@ -303,13 +443,19 @@
         </div>
 
 
-            <!--Inputs to simulate flex sensors, remove later-->
+            <!--Inputs to simulate flex sensors, remove later?-->
             <input type="range" class="slider1" id="pointer" min="1" max="100" value="1" step="1" oninput="setFlex(pointer, value)">
             <input type="range" class="slider2" id="middle" min="1" max="100" value="1" step="1" oninput="setFlex(middle, value)">
             <input type="range" class="slider3" id="thumb" min="1" max="100" value="1" step="1" oninput="setFlex(thumb, value)">
+
+            <!--Button to activate oscillator-->
+                <button class="notePress" onclick="playNote()">cAn YoU hElP mE</button>
+            <!--Button to stop oscillator-->
+                <button class="start" onclick="stopMe()">GetOuttaMyHeadGetOuttaMyHead</button>
     </span>
-
-    <button class="notePress" onclick="playNote()">cAn YoU hElP mE</button>
-
 </body>
 </html>
+https://tonejs.github.io/
+https://www.guitarland.com/MusicTheoryWithToneJS/PlayNote.html
+http://sites.music.columbia.edu/cmc/courses/g6611/spring2018/week3/index.html
+
