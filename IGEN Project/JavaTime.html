@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Glove Receiver</title>
 </head>
+<script src="./Tone.js"></script>
 
 <style>
     body{
@@ -182,6 +183,9 @@
 
     var volume;
 
+    // mute the output
+    vol.mute = false;
+
 //Functions
     //setFlex(Finger, Value) Takes in variable value and displays numerically/using bar
     //Finger: The finger which is affecting the bar
@@ -200,7 +204,9 @@
             else if (setVal > 90){
                 document.getElementById("pointerBar").style.backgroundColor = '#E12120';
             }
-            volume = setVal;
+
+            //Adjusts raw volume and set as the actual volume
+            volume = setVol(setVal);
         }
         if (finger == middle){
             document.getElementById("middleBar").style.width = setVal + "%";
@@ -228,9 +234,29 @@
                 document.getElementById("thumbBar").style.backgroundColor = '#E12120';
             }
         }
+
+        console.log("Volume set to " + volume);
     }
     
-    //checkButton
+    //setVol(value) Takes in the raw value and calibrates it to a volume (in decibels)
+    //Value: The raw percentage value of volume
+    function setVol(value){
+        var max = 20;
+        var min = -15;
+        var adjustedVol = (min) + ((max-min)*(value/100));
+        return adjustedVol;
+    }
+
+    
+    //playNote
+    function playNote(){
+        //create a synth and connect it to the main output (your speakers)
+        const synth = new Tone.Synth().toDestination();
+
+        //play a middle 'C' for the duration of an 8th note
+        synth.triggerAttackRelease("C4", "1n");
+        synth.volume.value = volume;
+    }
 
 
 </script>
@@ -282,6 +308,8 @@
             <input type="range" class="slider2" id="middle" min="1" max="100" value="1" step="1" oninput="setFlex(middle, value)">
             <input type="range" class="slider3" id="thumb" min="1" max="100" value="1" step="1" oninput="setFlex(thumb, value)">
     </span>
+
+    <button class="notePress" onclick="playNote()">cAn YoU hElP mE</button>
 
 </body>
 </html>
