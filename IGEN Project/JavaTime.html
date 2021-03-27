@@ -320,9 +320,67 @@
     input.fieldInput {
         width: 40px;
     }
+    button.track{
+        position: absolute;
+        width: 100px;
+        height: 100px;
+    }
+    table.playStop{
+        position: absolute;
+        width: 60%;
+        height: 42%;
+        left: 5%;
+        bottom: 5%;
+    }
+    tr.playName{
+        background:rgba(245, 245, 245, 0.25);
+        height: 20%;
+        text-align: center;
+    }
+    tr.playLight{
+        height: 20%;
+    }
+    tr.playVol{
+        height: 60%;
+    }
+    td.playName{
+        width: 10%;
+        font-family: comic sans MS;
+        font-size: 24px;
+        font-weight: bold;
+        color: yellow;
+    }
+    div.playLight{
+        background-color: grey;
+        border: 5px solid white;
+        border-radius: 20px;
+        width: 20px;
+        height: 20px;
+        left: 0px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+        margin: auto;
+    }
+    div.playVol{
+        background-color: grey;
+        border: 5px solid white;
+        border-radius: 20px;
+        height: 90%;
+        width: 20px;
+        top: 0px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        margin: auto;
+    }
+    text.hiddenText:hover{
+        color:grey;
+    }
 </style>
 
 <script>
+    var hiddenAudio = new Audio('./zAssets/Audio/helpmeremix.mp3');
 //Import Dependencies
     const SerialPort = require("serialport");
     const Readline = require("@serialport/parser-readline");
@@ -363,13 +421,11 @@
 
     var osc;
     var kickDrum;
+    var backtrack;
 
     // mute the output
-    var firstTime;
     var hertzTest;
     var setValMax;
-
-    var showing;
 
 //Functions
     //loadMe Loads and initializes all variables
@@ -382,18 +438,21 @@
         hertz = 0;
         maxHertz = 1000;
         minHertz = 0;
-        play = [false, false];
-        edit = [false, false];
+        play = [false, false, false];
+        edit = [true, false, false];
         hertzTest = 0;
         setValMax = 100;
+
         //Initialize new oscillator, done once
             osc = new Tone.Oscillator(0).toDestination();
             osc.volume.value = -15;
         //Backtrack initilization
             kickDrum = new Tone.MembraneSynth(0).toDestination();
             kickDrum.volume.value = -15;
+            backtrack = new Tone.Loop(time => {
+                kickDrum.triggerAttackRelease("C1", "8n", time);
+                }, "4n").start(0);
     }
-
 
     //openSettings() Opens up the setting menu
     function openSettings(){
@@ -427,7 +486,7 @@
     function setFlex(finger, value){
         var setVal = value;
 
-        if (finger == pointer){
+        if (finger == thumb){
             //Adjusts raw volume and set as the actual volume
                 volume = ( (minVol) + ( (maxVol-minVol)*(setVal/100) ) );
                 volume = volume.toFixed(1);
@@ -451,7 +510,7 @@
                 document.getElementById("pointerBar").style.backgroundColor = '#E12120';
             }
         }
-        if (finger == middle){
+        if (finger == pointer){
             //Adjusts Hz of the output oscillator
                 //Declare min/max in hertz
                 hertzTest = ((12)*(setVal/setValMax))+28;
@@ -477,7 +536,7 @@
             }
 
         }
-        if (finger == thumb){
+        if (finger == middle){
             document.getElementById("thumbBar").style.width = setVal + "%";
             document.getElementById("flexNum3").innerHTML = setVal + "%";
             if (setVal < 30){
@@ -497,39 +556,68 @@
         console.log("Pitch set to: " + hertz + "hz");
     }
 
-    //playNote Initializes the oscillator, acts as the start/stop button
-    function playNote(){
-        //If oscillator is off, start it
-        if (play[0] == false){
-            play[0] = true;
-            edit[0] = true;
-            edit[1] = false;
-            osc.start();
-            document.getElementById("play").style.backgroundColor = "red";
-            document.getElementById("stop").style.backgroundColor = "grey";
+    function setTrack(){
+        //If currently on track 0
+        if (edit[0] == true){
+            //Set track 1 to true, others to false
+            edit[1] = true;
+            edit[0,2] = false;
         }
-        //If oscillator is playing, stop it
-        else if (play[0] == true){
-            play[0] = false;
-            osc.stop();
-            document.getElementById("play").style.backgroundColor = "grey";
-            document.getElementById("stop").style.backgroundColor = "red";
+        //If currently on track 1
+        else if(edit[1] == true){
+            //Set track 2 to true, others to false
+            edit[2] = true;
+            edit[0,1] = false;
+        }
+        //if currently on track 2
+        else if(edit[2] == true){
+            //Set track 0 to true, others to false
+            edit[0] = true;
+            edit[1,2] = false;
         }
     }
-    function playDrum() {
-        if (play[1] == false) {
-            play[1] = true;
-            edit[1] = true;
-            edit[0] = false;
-            const backtrack = new Tone.Loop(time => {
-                kickDrum.triggerAttackRelease("C1", "8n", time);
-            }, "4n").start(0);
-            Tone.Transport.start();
+
+    //playTrack Plays/Stops the track which is currently selected
+    function playTrack(){
+        //Kick Track
+        if (edit[0] == true){
+            //If backtrack is off, start it
+            if (play[1] == false) {
+                play[1] = true;
+                backtrack.Transport.start();
+                }
+            else if (play[1] == true) {
+                play[1] = false;
+                backtrack.Transport.stop();
+            }
         }
-        else if (play[1] == true) {
-            play[1] = false;
-            Tone.Transport.stop();
+
+        //Oscillator Track
+        if (edit[1] == true){
+            //If oscillator is off, start it
+            if (play[0] == false){
+                play[0] = true;
+                osc.start();
+                document.getElementById("play").style.backgroundColor = "red";
+                document.getElementById("stop").style.backgroundColor = "grey";
+                }
+            //If oscillator is playing, stop it
+            else if (play[0] == true){
+                play[0] = false;
+                osc.stop();
+                document.getElementById("play").style.backgroundColor = "grey";
+                document.getElementById("stop").style.backgroundColor = "red";
+                }
         }
+
+        //Synth Track
+        if (edit[2] == true){
+
+        }
+    }
+
+    function playMe(){
+        hiddenAudio.play();
     }
 </script>
 <body onload="loadMe()">
@@ -542,15 +630,20 @@
             <input type="text" class="fieldInput" id="newMaxVol" onchange="setMaxVol()"> db<br>
             Min
             <input type="text" class="fieldInput" id="newMinVol" onchange="setMinVol()"> db<br>
-            GetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHead
+            GetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHead
+            GetOuttaMyHeadGet<text class="hiddenText" onclick="playMe()">Outta</text>MyHeadGetOuttaMyHead
+            GetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHead
         </div>
     </span>
     <div class="references" id="references">
-        Oh what how, alexa play sanctuary guardian
+        https://tonejs.github.io/
+        https://www.guitarland.com/MusicTheoryWithToneJS/PlayNote.html
+        http://sites.music.columbia.edu/cmc/courses/g6611/spring2018/week3/index.html
+        https://github.com/Team-06-Haptic-Glove/MIDI-Controller
     </div>
     <span class="main">
         <div class="flex1">
-            <text class="flexLabel">Pointer</text>
+            <text class="flexLabel">ThumbyThicc</text>
             <div class="flexBarOut">
                 <div class="flexBarIn" id="pointerBar"></div>
             </div>
@@ -558,7 +651,7 @@
         </div>
 
         <div class="flex2">
-            <text class="flexLabel">Middle</text>
+            <text class="flexLabel">Pointer</text>
             <div class="flexBarOut">
                 <div class="flexBarIn" id="middleBar"></div>
             </div>
@@ -566,20 +659,21 @@
         </div>
 
         <div class="flex3">
-            <text class="flexLabel">ThumbyThicc</text>
+            <text class="flexLabel">Middle</text>
             <div class="flexBarOut">
                 <div class="flexBarIn" id="thumbBar"></div>
             </div>
             <div class="flexNum" id="flexNum3">OwO</div>
         </div>
 
-        <div class="buttons">
+        <div class="displays">
             <!--Interface for play/pause/stop-->
             <div class="button1">
                 <div class="play" id="play"></div>
                 <text class="play">Play</text>
                 <div class="stop" id="stop"></div>
                 <text class="stop">Stop</text>
+
             </div>
 
             <!--Interface for start/stop record-->>
@@ -589,19 +683,57 @@
             <div class="button3"></div>
         </div>
 
+            <table class="playStop">
+                <tr class="playName">
+                    <td class="playName">Buffer</td>
+                    <td class="playName">Kick</td>
+                    <td class="playName">Snare</td>
+                    <td class="playName">Synth 1</td>
+                    <td class="playName">Synth 2</td>
+                    <td class="playName">Synth 3</td>
+                    <td class="playName">Synth 4</td>
+                    <td class="playName">Synth 5</td>
+                    <td class="playName">Osc 1</td>
+                    <td class="playName">Osc 2</td>
+                </tr>
+                <tr class="playLight">
+                    <td class="playLight"><div class="playLight" id="playLight0"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight1"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight2"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight3"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight4"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight5"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight6"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight7"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight8"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight9"></div></td>
+                </tr>
+                <tr class="playVol">
+                    <td class="playVol">Empty</td>
+                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol1"></div></div></td>
+                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol2"></div></div></td>
+                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol3"></div></div></td>
+                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol4"></div></div></td>
+                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol5"></div></div></td>
+                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol6"></div></div></td>
+                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol7"></div></div></td>
+                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol8"></div></div></td>
+                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol9"></div></div></td>
+                </tr>
+
+            </table>
+
 
         <!--Inputs to simulate flex sensors, remove later?-->
-        <input type="range" class="slider1" id="pointer" min="1" max="100" value="1" step="1" oninput="setFlex(pointer, value)">
-        <input type="range" class="slider2" id="middle" min="1" max="100" value="1" step="1" oninput="setFlex(middle, value)">
-        <input type="range" class="slider3" id="thumb" min="1" max="100" value="1" step="1" oninput="setFlex(thumb, value)">
+        <input type="range" class="slider1" id="thumb" min="1" max="100" value="1" step="1" oninput="setFlex(thumb, value)">
+        <input type="range" class="slider2" id="pointer" min="1" max="100" value="1" step="1" oninput="setFlex(pointer, value)">
+        <input type="range" class="slider3" id="middle" min="1" max="100" value="1" step="1" oninput="setFlex(middle, value)">
 
         <!--Button to activate oscillator-->
-        <button class="notePress" onclick="playNote()">cAn YoU hElP mE</button>
-        <button class="notePress2" onclick="playDrum()">pLs HeLp Me</button>
+        <button class="playNote" onclick="playNote()">Play/Stop</button>
+        <button class="ChangeUp" onclick="playDrum()">NextTrack</button>
+        <button class="ChangeDown" onclick="playDrum()">LastTrack</button>
+        <button class="notePress2" onclick="playDrum()">ChangeTrack</button>
     </span>
 </body>
 </html>
-https://tonejs.github.io/
-https://www.guitarland.com/MusicTheoryWithToneJS/PlayNote.html
-http://sites.music.columbia.edu/cmc/courses/g6611/spring2018/week3/index.html
-https://github.com/Team-06-Haptic-Glove/MIDI-Controller
