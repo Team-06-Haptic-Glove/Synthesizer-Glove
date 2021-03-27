@@ -37,16 +37,15 @@
     }
     div.button1{
         position: absolute;
-        background-color: #5C5C5C;
+        background-color:rgba(245, 245, 245, 0.25);
         width: 60%;
         height: 12%;
         left: 2%;
         bottom: 65%;
-        opacity: 50%;
     }
     div.button2{
         position: absolute;
-        background-color: #5C5C5C;
+        background-color:rgba(245, 245, 245, 0.25);
         width: 20%;
         height: 12%;
         left: 5%;
@@ -55,7 +54,7 @@
     }
     div.button3{
         position: absolute;
-        background-color: #5C5C5C;
+        background-color:rgba(245, 245, 245, 0.25);
         width: 30%;
         height: 12%;
         left: 30%;
@@ -193,12 +192,18 @@
         border-bottom-left-radius: 20px;
         border-bottom-right-radius: 20px;
         background-color: white;
+        padding: 10px;
         width: 150px;
         height: 300px;
         right: 5%;
         top: 100%;
-        z-index: 1;;
+        z-index: 1;
         display: none;
+        font-size: 16px;
+        font-weight: bold;
+        font-family: comic sans MS;
+        overflow: hidden;
+        word-wrap: break-word;
     }
     div.references{
         position: absolute;
@@ -217,6 +222,57 @@
         overflow: hidden !important;
         font-family: comic sans MS;
         display: none;
+    }
+    div.play{
+        position: absolute;
+        border: 10px solid black;
+        border-radius: 16px;
+        background-color: grey;
+        width: 30px;
+        height: 30px;
+        left: 120px;
+        top: 5px;
+        margin: 0;
+    }
+    text.play{
+        position: absolute;
+        background: rgba(245,245,245, 0.2);
+        width: 100px;
+        left: 15px;
+        top: 10px;
+        font-size: 42px;
+        font-weight: bold;
+        font-family: comic sans MS;
+        text-align: center;
+        text-shadow: royalblue;
+        color:black;
+    }
+    div.stop{
+        position: absolute;
+        border: 10px solid black;
+        border-radius: 16px;
+        background-color: grey;
+        width: 30px;
+        height: 30px;
+        left: 300px;
+        top: 5px;
+        margin: 0;
+    }
+    text.stop{
+        position: absolute;
+        background: rgba(245,245,245, 0.2);
+        width: 100px;
+        left: 190px;
+        top: 10px;
+        font-size: 42px;
+        font-weight: bold;
+        font-family: comic sans MS;
+        text-align: center;
+        text-shadow: royalblue;
+        color:black;
+    }
+    input.fieldInput{
+        width: 40px;
     }
 </style>
 
@@ -262,6 +318,8 @@
 
     // mute the output
     var firstTime;
+    var hertzTest;
+    var setValMax;
 
     var showing;
 
@@ -277,7 +335,8 @@
         maxHertz = 1000;
         minHertz = 0;
         play = false;
-        
+        hertzTest = 0;
+        setValMax = 100;
         //Initialize new oscillator, done once
             osc = new Tone.Oscillator(0).toDestination();
             osc.volume.value = -15;
@@ -318,7 +377,6 @@
 
         if (finger == pointer){
             //Adjusts raw volume and set as the actual volume
-                //Declare min/max in decibels
                 volume = ( (minVol) + ( (maxVol-minVol)*(setVal/100) ) );
                 volume = volume.toFixed(1);
                 osc.volume.value = volume;
@@ -338,8 +396,9 @@
         if (finger == middle){
             //Adjusts Hz of the output oscillator
                 //Declare min/max in hertz
-                hertz = ( (minHertz) + ( (maxHertz-minHertz)*(setVal/100) ) );
-                hertz = hertz.toFixed(1);
+                hertzTest = ((12)*(setVal/setValMax))+28;
+                hertz = (2**((hertzTest.toFixed(0)-49)/12))*440
+                hertz = hertz.toFixed(2);
                 osc.frequency.value = hertz;
             //Update the UI
             document.getElementById("middleBar").style.width = setVal + "%";
@@ -381,11 +440,15 @@
         if (play == false){
             play = true;
             osc.start();
+            document.getElementById("play").style.backgroundColor = "red";
+            document.getElementById("stop").style.backgroundColor = "grey";
         }
         //If oscillator is playing, stop it
         else if (play == true){
             play = false;
             osc.stop();
+            document.getElementById("play").style.backgroundColor = "grey";
+            document.getElementById("stop").style.backgroundColor = "red";
         }
     }
 
@@ -395,7 +458,12 @@
         <img class="gear" src="./zAssets/settings.png" onclick="openSettings()">
         <img class="links" src="./zAssets/daDrip.png" onclick="openRefs()">
         <div class="settings" id="settings">
-            Oh god oh fuck help
+            <center>Change Volume</center><br>
+            Max
+                <input type="text" class="fieldInput" id="newMaxVol" onchange="setMaxVol()"> db<br>
+            Min
+                <input type="text" class="fieldInput" id="newMinVol" onchange="setMinVol()"> db<br>
+            GetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHead
         </div>
     </span>
     <div class="references" id="references">
@@ -430,9 +498,9 @@
             <!--Interface for play/pause/stop-->
             <div class="button1">
                 <div class="play" id="play"></div>
-                <div class="pause" id="pause"></div>
-                <div class="buffer" id="buffer"></div>
+                    <text class="play">Play</text>
                 <div class="stop" id="stop"></div>
+                    <text class="stop">Stop</text>
             </div>
 
             <!--Interface for start/stop record-->>
@@ -450,12 +518,11 @@
 
             <!--Button to activate oscillator-->
                 <button class="notePress" onclick="playNote()">cAn YoU hElP mE</button>
-            <!--Button to stop oscillator-->
-                <button class="start" onclick="stopMe()">GetOuttaMyHeadGetOuttaMyHead</button>
     </span>
 </body>
 </html>
 https://tonejs.github.io/
 https://www.guitarland.com/MusicTheoryWithToneJS/PlayNote.html
 http://sites.music.columbia.edu/cmc/courses/g6611/spring2018/week3/index.html
+https://github.com/Team-06-Haptic-Glove/MIDI-Controller
 
