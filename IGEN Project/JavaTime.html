@@ -1,4 +1,4 @@
-<html>
+﻿<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,10 +7,11 @@
 <script src="./Tone.js"></script>
 
 <style>
-    body{
+    body {
         background-image: url(./zAssets/wood.jpeg);
     }
-    span.main{
+
+    span.main {
         position: absolute;
         background-image: url(./zAssets/blackground.jpg);
         background-clip: padding-box;
@@ -28,40 +29,45 @@
         overflow: hidden !important;
         font-family: comic sans MS;
     }
-    span.settings{
+
+    span.settings {
         position: absolute;
         background-color: transparent;
         width: 20%;
         height: 6%;
         right: 5%;
     }
-    div.button1{
+
+    div.button1 {
         position: absolute;
-        background-color:rgba(245, 245, 245, 0.25);
+        background-color: rgba(245, 245, 245, 0.25);
         width: 60%;
         height: 12%;
         left: 2%;
         bottom: 65%;
     }
-    div.button2{
+
+    div.button2 {
         position: absolute;
-        background-color:rgba(245, 245, 245, 0.25);
+        background-color: rgba(245, 245, 245, 0.25);
         width: 20%;
         height: 12%;
         left: 5%;
         bottom: 50%;
         opacity: 50%;
     }
-    div.button3{
+
+    div.button3 {
         position: absolute;
-        background-color:rgba(245, 245, 245, 0.25);
+        background-color: rgba(245, 245, 245, 0.25);
         width: 30%;
         height: 12%;
         left: 30%;
         bottom: 50%;
         opacity: 50%;
     }
-    div.flex1{
+
+    div.flex1 {
         position: inherit;
         background-image: url(./zAssets/wood2.jpeg);
         background-color: pink;
@@ -71,7 +77,8 @@
         top: 0px;
         left: 0%;
     }
-    div.flex2{
+
+    div.flex2 {
         position: inherit;
         background-image: url(./zAssets/wood2.jpeg);
         background-color: hotpink;
@@ -81,7 +88,8 @@
         top: 0px;
         left: 33.33%;
     }
-    div.flex3{
+
+    div.flex3 {
         position: inherit;
         background-image: url(./zAssets/wood2.jpeg);
         background-color: fuchsia;
@@ -91,7 +99,8 @@
         top: 0px;
         left: 66.66%;
     }
-    div.flexBarOut{
+
+    div.flexBarOut {
         position: inherit;
         border: 8px solid black;
         border-radius: 20px;
@@ -102,7 +111,8 @@
         bottom: 10px;
         overflow: hidden;
     }
-    div.flexBarIn{
+
+    div.flexBarIn {
         background-color: #0AA30C;
         height: 100%;
         width: 1%;
@@ -110,7 +120,8 @@
         transition-property: background-color;
         transition-duration: 0.4s;
     }
-    div.flexNum{
+
+    div.flexNum {
         position: inherit;
         background-color: white;
         border: 5px solid black;
@@ -123,29 +134,32 @@
         text-align: center;
         align-items: center;
     }
-    input.slider1{
+
+    input.slider1 {
         position: absolute;
         width: 20%;
         height: 10%;
         top: 120px;
         right: 5%;
     }
-    input.slider2{
+
+    input.slider2 {
         position: absolute;
         width: 20%;
         height: 10%;
         top: 160px;
         right: 5%;
-        
     }
-    input.slider3{
+
+    input.slider3 {
         position: absolute;
         width: 20%;
         height: 10%;
         top: 200px;
         right: 5%;
     }
-    text.flexLabel{
+
+    text.flexLabel {
         position: inherit;
         left: 0px;
         right: 0px;
@@ -153,10 +167,12 @@
         top: 5px;
         text-align: center;
         font-weight: bold;
-        font-size: 24px;;
+        font-size: 24px;
+        ;
         text-shadow: 1px 0 black;
     }
-    button.notePress{
+
+    button.notePress {
         position: inherit;
         background-image: url(./zAssets/metal.jpeg);
         border: 5px solid #414647;
@@ -171,22 +187,46 @@
         box-shadow: none;
         outline: none;
     }
-    button.notePress:active{
-        border-color: #585d5e;
+
+        button.notePress:active {
+            border-color: #585d5e;
+            box-shadow: none;
+            outline: none;
+        }
+    button.notePress2 {
+        position: inherit;
+        background-image: url(./zAssets/metal.jpeg);
+        border: 5px solid #414647;
+        border-radius: 40px;
+        width: 80px;
+        height: 80px;
+        right: 5%;
+        bottom: 16%;
+        font-size: 10px;
+        font-weight: bold;
+        font-family: comic sans MS;
         box-shadow: none;
         outline: none;
     }
-    img.gear{
+
+        button.notePress2:active {
+            border-color: #585d5e;
+            box-shadow: none;
+            outline: none;
+        }
+    img.gear {
         position: absolute;
         height: 90%;
         right: 5px
     }
-    img.links{
+
+    img.links {
         position: absolute;
         height: 85%;
         right: 60px;
     }
-    div.settings{
+
+    div.settings {
         position: inherit;
         border: 8px solid #696969;
         border-bottom-left-radius: 20px;
@@ -205,7 +245,8 @@
         overflow: hidden;
         word-wrap: break-word;
     }
-    div.references{
+
+    div.references {
         position: absolute;
         border: 16px solid #696969;
         border-radius: 36px;
@@ -223,7 +264,8 @@
         font-family: comic sans MS;
         display: none;
     }
-    div.play{
+
+    div.play {
         position: absolute;
         border: 10px solid black;
         border-radius: 16px;
@@ -234,7 +276,8 @@
         top: 5px;
         margin: 0;
     }
-    text.play{
+
+    text.play {
         position: absolute;
         background: rgba(245,245,245, 0.2);
         width: 100px;
@@ -245,9 +288,10 @@
         font-family: comic sans MS;
         text-align: center;
         text-shadow: royalblue;
-        color:black;
+        color: black;
     }
-    div.stop{
+
+    div.stop {
         position: absolute;
         border: 10px solid black;
         border-radius: 16px;
@@ -258,7 +302,8 @@
         top: 5px;
         margin: 0;
     }
-    text.stop{
+
+    text.stop {
         position: absolute;
         background: rgba(245,245,245, 0.2);
         width: 100px;
@@ -269,9 +314,10 @@
         font-family: comic sans MS;
         text-align: center;
         text-shadow: royalblue;
-        color:black;
+        color: black;
     }
-    input.fieldInput{
+
+    input.fieldInput {
         width: 40px;
     }
 </style>
@@ -313,8 +359,10 @@
     var minHertz;
     var looper ;
     var play;
+    var edit;
 
     var osc;
+    var kickDrum;
 
     // mute the output
     var firstTime;
@@ -334,12 +382,16 @@
         hertz = 0;
         maxHertz = 1000;
         minHertz = 0;
-        play = false;
+        play = [false, false];
+        edit = [false, false];
         hertzTest = 0;
         setValMax = 100;
         //Initialize new oscillator, done once
             osc = new Tone.Oscillator(0).toDestination();
             osc.volume.value = -15;
+        //Backtrack initilization
+            kickDrum = new Tone.MembraneSynth(0).toDestination();
+            kickDrum.volume.value = -15;
     }
 
 
@@ -379,7 +431,13 @@
             //Adjusts raw volume and set as the actual volume
                 volume = ( (minVol) + ( (maxVol-minVol)*(setVal/100) ) );
                 volume = volume.toFixed(1);
+            //Checks for previous button to be correct one, prevents editing of all tracks
+            if (edit[0] == true){
                 osc.volume.value = volume;
+            }
+            if (edit[1] == true) {
+                kickDrum.volume.value = volume;
+            }
             //Update the UI
             document.getElementById("pointerBar").style.width = setVal + "%";
             document.getElementById("flexNum1").innerHTML = volume + "db";
@@ -399,7 +457,12 @@
                 hertzTest = ((12)*(setVal/setValMax))+28;
                 hertz = (2**((hertzTest.toFixed(0)-49)/12))*440
                 hertz = hertz.toFixed(2);
+             if (edit[0] == true){
                 osc.frequency.value = hertz;
+            }
+             if (edit[1] == true) {
+                Tone.Transport.bpm.value = hertz;
+            }
             //Update the UI
             document.getElementById("middleBar").style.width = setVal + "%";
             document.getElementById("flexNum2").innerHTML = hertz + "hz";
@@ -433,25 +496,41 @@
         console.log("Volume set to: " + volume + "db");
         console.log("Pitch set to: " + hertz + "hz");
     }
-    
+
     //playNote Initializes the oscillator, acts as the start/stop button
     function playNote(){
         //If oscillator is off, start it
-        if (play == false){
-            play = true;
+        if (play[0] == false){
+            play[0] = true;
+            edit[0] = true;
+            edit[1] = false;
             osc.start();
             document.getElementById("play").style.backgroundColor = "red";
             document.getElementById("stop").style.backgroundColor = "grey";
         }
         //If oscillator is playing, stop it
-        else if (play == true){
-            play = false;
+        else if (play[0] == true){
+            play[0] = false;
             osc.stop();
             document.getElementById("play").style.backgroundColor = "grey";
             document.getElementById("stop").style.backgroundColor = "red";
         }
     }
-
+    function playDrum() {
+        if (play[1] == false) {
+            play[1] = true;
+            edit[1] = true;
+            edit[0] = false;
+            const backtrack = new Tone.Loop(time => {
+                kickDrum.triggerAttackRelease("C1", "8n", time);
+            }, "4n").start(0);
+            Tone.Transport.start();
+        }
+        else if (play[1] == true) {
+            play[1] = false;
+            Tone.Transport.stop();
+        }
+    }
 </script>
 <body onload="loadMe()">
     <span class="settings">
@@ -460,9 +539,9 @@
         <div class="settings" id="settings">
             <center>Change Volume</center><br>
             Max
-                <input type="text" class="fieldInput" id="newMaxVol" onchange="setMaxVol()"> db<br>
+            <input type="text" class="fieldInput" id="newMaxVol" onchange="setMaxVol()"> db<br>
             Min
-                <input type="text" class="fieldInput" id="newMinVol" onchange="setMinVol()"> db<br>
+            <input type="text" class="fieldInput" id="newMinVol" onchange="setMinVol()"> db<br>
             GetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHead
         </div>
     </span>
@@ -477,7 +556,7 @@
             </div>
             <div class="flexNum" id="flexNum1">uwu</div>
         </div>
-            
+
         <div class="flex2">
             <text class="flexLabel">Middle</text>
             <div class="flexBarOut">
@@ -485,7 +564,7 @@
             </div>
             <div class="flexNum" id="flexNum2">o_O</div>
         </div>
-            
+
         <div class="flex3">
             <text class="flexLabel">ThumbyThicc</text>
             <div class="flexBarOut">
@@ -493,14 +572,14 @@
             </div>
             <div class="flexNum" id="flexNum3">OwO</div>
         </div>
-        
+
         <div class="buttons">
             <!--Interface for play/pause/stop-->
             <div class="button1">
                 <div class="play" id="play"></div>
-                    <text class="play">Play</text>
+                <text class="play">Play</text>
                 <div class="stop" id="stop"></div>
-                    <text class="stop">Stop</text>
+                <text class="stop">Stop</text>
             </div>
 
             <!--Interface for start/stop record-->>
@@ -511,13 +590,14 @@
         </div>
 
 
-            <!--Inputs to simulate flex sensors, remove later?-->
-            <input type="range" class="slider1" id="pointer" min="1" max="100" value="1" step="1" oninput="setFlex(pointer, value)">
-            <input type="range" class="slider2" id="middle" min="1" max="100" value="1" step="1" oninput="setFlex(middle, value)">
-            <input type="range" class="slider3" id="thumb" min="1" max="100" value="1" step="1" oninput="setFlex(thumb, value)">
+        <!--Inputs to simulate flex sensors, remove later?-->
+        <input type="range" class="slider1" id="pointer" min="1" max="100" value="1" step="1" oninput="setFlex(pointer, value)">
+        <input type="range" class="slider2" id="middle" min="1" max="100" value="1" step="1" oninput="setFlex(middle, value)">
+        <input type="range" class="slider3" id="thumb" min="1" max="100" value="1" step="1" oninput="setFlex(thumb, value)">
 
-            <!--Button to activate oscillator-->
-                <button class="notePress" onclick="playNote()">cAn YoU hElP mE</button>
+        <!--Button to activate oscillator-->
+        <button class="notePress" onclick="playNote()">cAn YoU hElP mE</button>
+        <button class="notePress2" onclick="playDrum()">pLs HeLp Me</button>
     </span>
 </body>
 </html>
@@ -525,4 +605,3 @@ https://tonejs.github.io/
 https://www.guitarland.com/MusicTheoryWithToneJS/PlayNote.html
 http://sites.music.columbia.edu/cmc/courses/g6611/spring2018/week3/index.html
 https://github.com/Team-06-Haptic-Glove/MIDI-Controller
-
