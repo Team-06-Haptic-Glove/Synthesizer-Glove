@@ -214,6 +214,26 @@
             box-shadow: none;
             outline: none;
         }
+    button.notePress3 {
+        position: inherit;
+        background-image: url(./zAssets/metal.jpeg);
+        border: 5px solid #414647;
+        border-radius: 40px;
+        width: 80px;
+        height: 80px;
+        right: 5%;
+        bottom: 27%;
+        font-size: 10px;
+        font-weight: bold;
+        font-family: comic sans MS;
+        box-shadow: none;
+        outline: none;
+    }
+        button.notePress3:active {
+            border-color: #585d5e;
+            box-shadow: none;
+            outline: none;
+        }
     img.gear {
         position: absolute;
         height: 90%;
@@ -377,10 +397,54 @@
     text.hiddenText:hover{
         color:grey;
     }
+    div.trackDisplay {
+        position: inherit;
+        border: 8px solid black;
+        border-radius: 16px;
+        background: rgba(245, 245, 245, 0.5);
+        width: 55%;
+        height: 70%;
+        top: 0px;
+        bottom: 0px;
+        left: 400px;
+        margin: auto;
+        padding-left: 10px;
+
+    }
+    text.trackDisplayFluff{
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        margin: auto;
+        font-size: 40px;
+        font-family: comic sans MS;
+        font-weight: bold;
+    }
+    text.trackDisplay{
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        margin: auto;
+        right: 20%;
+        font-size: 40px;
+        font-family: comic sans MS;
+        font-weight: bold;
+    }
+    div.hiddenTwo{
+        position: absolute;
+        height: 90%;
+        width: 50px;
+        right: 130px;
+    }
+    div.hiddenThree{
+        position: relative;
+        width: 100%;
+        height: 50px;
+        bottom: -30%;
+    }
 </style>
 
 <script>
-    var hiddenAudio = new Audio('./zAssets/Audio/helpmeremix.mp3');
 //Import Dependencies
     const SerialPort = require("serialport");
     const Readline = require("@serialport/parser-readline");
@@ -415,7 +479,6 @@
     var hertz;
     var maxHertz;
     var minHertz;
-    var looper ;
     var play;
     var edit;
 
@@ -427,8 +490,8 @@
     var hertzTest;
     var setValMax;
 
-//Functions
-    //loadMe Loads and initializes all variables
+//------Functions-------//
+    //loadMe() Loads and initializes all variables
     function loadMe(){
         showingSet = false;
         showingRef = false;
@@ -438,20 +501,41 @@
         hertz = 0;
         maxHertz = 1000;
         minHertz = 0;
-        play = [false, false, false];
-        edit = [true, false, false];
+        play = [false, false, false, false, false, false, false, false, false, false];
+        m_play = false
+        edit = [true, false, false, false, false, false, false, false, false, false];
+        loop = [0,0,0,0,0,0,0,0,0,0];
+        track = [0,0,0,0,0,0,0,0,0,0];
+        freq = ["C1", "C1", "C1", "C1", "C1", "C1", "C1", "C1", "C1", "C1"]
+        bpm = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         hertzTest = 0;
         setValMax = 100;
+        currentTrack = 0;
+
+        //Turning buffer/stop light on when site is loaded
+        document.getElementById("playLight0").style.backgroundColor = "green";
+        document.getElementById("stop").style.backgroundColor = "red";
+
+
+        //Backtrack initilization
+            track[1] = new Tone.MembraneSynth().toDestination();
+            track[1].volume.value = -15;
+
+            track[2] = new Tone.NoiseSynth().toDestination();
+            track[2].volume.value = -15;
+        //Synthtime
+            
+            for (i = 3;i < 8;i++){
+                track[i] = new Tone.Synth().toDestination();
+                track[i].volume.value = -15;
+            }
 
         //Initialize new oscillator, done once
-            osc = new Tone.Oscillator(0).toDestination();
-            osc.volume.value = -15;
-        //Backtrack initilization
-            kickDrum = new Tone.MembraneSynth(0).toDestination();
-            kickDrum.volume.value = -15;
-            backtrack = new Tone.Loop(time => {
-                kickDrum.triggerAttackRelease("C1", "8n", time);
-                }, "4n").start(0);
+            track[8] = new Tone.Oscillator(freq[8],"sine").toDestination();
+            track[8].volume.value = -15;
+
+            track[9] = new Tone.Oscillator(freq[9],"square").toDestination();
+            track[9].volume.value = -15;
     }
 
     //openSettings() Opens up the setting menu
@@ -479,6 +563,10 @@
         }
     }
 
+    //setMaxVol Allows user to set maximum volume in decibels using the textbox
+    //setMinVol Allows user to set minimum volume in decibels using the textbox
+    function setMaxVol(volume){ maxVol = volume; console.log(maxVol)}
+    function setMinVol(volume){ minVol = volume; console.log(minVol)}
 
     //setFlex(Finger, Value) Takes in variable value and displays numerically/using bar
     //Finger: The finger which is affecting the bar
@@ -491,24 +579,19 @@
                 volume = ( (minVol) + ( (maxVol-minVol)*(setVal/100) ) );
                 volume = volume.toFixed(1);
             //Checks for previous button to be correct one, prevents editing of all tracks
-            if (edit[0] == true){
-                osc.volume.value = volume;
-            }
-            if (edit[1] == true) {
-                kickDrum.volume.value = volume;
-            }
+                for (i = 0; i < edit.length; i++){
+                    if (edit[i] == true)
+                        track[i].volume.value = volume;
+                }
             //Update the UI
             document.getElementById("pointerBar").style.width = setVal + "%";
             document.getElementById("flexNum1").innerHTML = volume + "db";
-            if (setVal < 30){
+            if (setVal < 30)
                 document.getElementById("pointerBar").style.backgroundColor = '#0AA30C';
-            }
-            else if (setVal > 40 && setVal < 90){
+            else if (setVal > 40 && setVal < 90)
                 document.getElementById("pointerBar").style.backgroundColor = '#D0D40F';
-            }
-            else if (setVal > 90){
+            else if (setVal > 90)
                 document.getElementById("pointerBar").style.backgroundColor = '#E12120';
-            }
         }
         if (finger == pointer){
             //Adjusts Hz of the output oscillator
@@ -516,38 +599,37 @@
                 hertzTest = ((12)*(setVal/setValMax))+28;
                 hertz = (2**((hertzTest.toFixed(0)-49)/12))*440
                 hertz = hertz.toFixed(2);
-             if (edit[0] == true){
-                osc.frequency.value = hertz;
+            for (i = 3; i < edit.length; i++){
+                if (edit[i] == true)
+                    freq[i] = hertz;
             }
-             if (edit[1] == true) {
-                Tone.Transport.bpm.value = hertz;
+            for (i = 8; i < edit.length; i++){
+                if (edit[i] == true)
+                    track[i].frequency.value = hertz;
             }
             //Update the UI
             document.getElementById("middleBar").style.width = setVal + "%";
             document.getElementById("flexNum2").innerHTML = hertz + "hz";
-            if (setVal < 30){
+            if (setVal < 30)
                 document.getElementById("middleBar").style.backgroundColor = '#0AA30C';
-            }
-            else if (setVal > 40 && setVal < 90){
+            else if (setVal > 40 && setVal < 90)
                 document.getElementById("middleBar").style.backgroundColor = '#D0D40F';
-            }
-            else if (setVal > 90){
+            else if (setVal > 90)
                 document.getElementById("middleBar").style.backgroundColor = '#E12120';
-            }
 
         }
         if (finger == middle){
+            //Adjust 1-100 range to bpm with range of 0-5 with increments of 0.1
+
+            //Update UI
             document.getElementById("thumbBar").style.width = setVal + "%";
             document.getElementById("flexNum3").innerHTML = setVal + "%";
-            if (setVal < 30){
+            if (setVal < 30)
                 document.getElementById("thumbBar").style.backgroundColor = '#0AA30C';
-            }
-            else if (setVal > 40 && setVal < 90){
+            else if (setVal > 40 && setVal < 90)
                 document.getElementById("thumbBar").style.backgroundColor = '#D0D40F';
-            }
-            else if (setVal > 90){
+            else if (setVal > 90)
                 document.getElementById("thumbBar").style.backgroundColor = '#E12120';
-            }
         }
 
         //Clear and display updated values to console
@@ -556,82 +638,236 @@
         console.log("Pitch set to: " + hertz + "hz");
     }
 
-    function setTrack(){
-        //If currently on track 0
-        if (edit[0] == true){
-            //Set track 1 to true, others to false
-            edit[1] = true;
-            edit[0,2] = false;
+    //playSound() Acts as the global enable play/stop
+    function playSound(){
+        Tone.start();
+        if (m_play == false){
+            m_play = true;
+            Tone.Transport.start();
+            document.getElementById("play").style.backgroundColor = "green";
+            document.getElementById("stop").style.backgroundColor = "grey";
+            if (play[8] == true)
+                track[8].start();
+            if (play[9] == true)
+                track[9].start();
         }
-        //If currently on track 1
-        else if(edit[1] == true){
-            //Set track 2 to true, others to false
-            edit[2] = true;
-            edit[0,1] = false;
+        else if (m_play == true){
+            m_play = false;
+            Tone.Transport.stop();
+            document.getElementById("stop").style.backgroundColor = "red";
+            document.getElementById("play").style.backgroundColor = "grey";
+            track[8].stop();
+            track[9].stop();
         }
-        //if currently on track 2
-        else if(edit[2] == true){
-            //Set track 0 to true, others to false
-            edit[0] = true;
-            edit[1,2] = false;
+    }
+
+    //changeTrack() Cycles to next / previous? track on button press
+    function changeTrack(){
+        Tone.start();
+        console.log(currentTrack);
+        currentTrack++;
+        if(currentTrack > 9){
+            currentTrack = 0;
         }
+        /*
+        if (direction == 'next'){
+            currentTrack++;
+            if(currentTrack > 9){
+                currentTrack = 0;
+            }
+        }
+        else if (direction == 'last'){
+            currentTrack--;
+            if (currentTrack < 0){
+                currentTrack = 9;
+            }
+        }
+        */
+        edit = [false, false, false, false, false, false, false, false, false, false]
+        edit[currentTrack] = true;
+
+        if (edit[0] == true)
+            //buffer light on
+            document.getElementById("playLight0").style.backgroundColor = "green";
+        else if (edit[0] == false)
+            //buffer light off
+            document.getElementById("playLight0").style.backgroundColor = "grey";
     }
 
     //playTrack Plays/Stops the track which is currently selected
     function playTrack(){
-        //Kick Track
-        if (edit[0] == true){
-            //If backtrack is off, start it
-            if (play[1] == false) {
-                play[1] = true;
-                backtrack.Transport.start();
+        Tone.start();
+            //Kick
+            if (edit[1] == true){            
+                if (play[1] == false) {
+                    play[1] = true;
+                    //kick light on
+                    document.getElementById("playLight1").style.backgroundColor = "green";
+                    //looping the sound
+                    loop[1] = new Tone.Loop(time => {
+                        track[1].triggerAttackRelease("C1", "8n", time);
+                    }, 0.5).start(0); 
+                } 
+                else if (play[1] == true){
+                    play[1] = false;
+                    document.getElementById("playLight1").style.backgroundColor = "grey";
+                    loop[1].stop();
                 }
-            else if (play[1] == true) {
-                play[1] = false;
-                backtrack.Transport.stop();
+            }
+            //Snare
+            else if (edit[2] == true){
+                if (play[2] == false) {
+                    play[2] = true;
+                    //snare light on
+                    document.getElementById("playLight2").style.backgroundColor = "green";
+                    loop[2] = new Tone.Loop(time =>{
+                        track[2].triggerAttackRelease("4n",time)
+                    },"1n").start(0);
+                } 
+                else if (play[2] == true){
+                    play[2] = false;
+                    document.getElementById("playLight2").style.backgroundColor = "grey";
+                    loop[2].stop();
+                }
+            }
+            //Synth 1
+            else if (edit[3] == true){                
+                if (play[3] == false) {
+                    play[3] = true;
+                    //synth1 light on
+                    document.getElementById("playLight3").style.backgroundColor = "green";
+                    loop[3] = new Tone.Loop(time =>{
+                        track[3].triggerAttackRelease(freq[3], "8n", time)
+                    },"1n").start(0);
+                } 
+                else if (play[3] == true){
+                    play[3] = false;
+                    document.getElementById("playLight3").style.backgroundColor = "grey";
+                    loop[3].stop();
+                }
+            }
+            //Synth 2
+            else if (edit[4] == true){                
+                if (play[4] == false) {
+                    play[4] = true;
+                    //synth2 light on
+                    document.getElementById("playLight4").style.backgroundColor = "green";
+                    loop[4] = new Tone.Loop(time =>{
+                        track[4].triggerAttackRelease(freq[4], "8n", time)
+                    },"1n").start(0);
+                } 
+                else if (play[4] == true){
+                    play[4] = false;
+                    document.getElementById("playLight4").style.backgroundColor = "grey";
+                    loop[4].stop();
+                }
+            }
+            //Synth 3
+            else if (edit[5] == true){                
+                if (play[5] == false) {
+                    play[5] = true;
+                    //synth3 light on
+                    document.getElementById("playLight5").style.backgroundColor = "green";
+                    loop[5] = new Tone.Loop(time =>{
+                        track[5].triggerAttackRelease(freq[5], "8n", time)
+                    },"1n").start(0);
+                } 
+                else if (play[5] == true){
+                    play[5] = false;
+                    document.getElementById("playLight5").style.backgroundColor = "grey";
+                    loop[5].stop();
+                }
+            }
+            //Synth 4
+            else if (edit[6] == true){                
+                if (play[6] == false) {
+                    play[6] = true;
+                    //synth4 light on
+                    document.getElementById("playLight6").style.backgroundColor = "green";
+                    loop[6] = new Tone.Loop(time =>{
+                        track[6].triggerAttackRelease(freq[6], "8n", time)
+                    },"1n").start(0);
+                } 
+                else if (play[6] == true){
+                    play[6] = false;
+                    document.getElementById("playLight6").style.backgroundColor = "grey";
+                    loop[6].stop();
+                }
+            }
+            //Synth 5
+            else if (edit[7] == true){                
+                if (play[7] == false) {
+                    play[7] = true;
+                    //synth5 light on
+                    document.getElementById("playLight7").style.backgroundColor = "green";
+                    loop[7] = new Tone.Loop(time =>{
+                        track[7].triggerAttackRelease(freq[7], "8n", time)
+                    },"1n").start(0);
+                } 
+                else if (play[7] == true){
+                    play[7] = false;
+                    document.getElementById("playLight7").style.backgroundColor = "grey";
+                    loop[7].stop();
+                }
+            }
+            //Osc 1
+            else if (edit[8] == true){                
+                if (play[8] == false) {
+                    play[8] = true;
+                    //osc1 light on
+                    document.getElementById("playLight8").style.backgroundColor = "green";
+                    if (m_play == true)
+                        track[8].start();
+                } 
+                else if (play[8] == true){
+                    play[8] = false;
+                    document.getElementById("playLight8").style.backgroundColor = "grey";
+                    track[8].stop();
+                }
+
+            }
+            //Osc 1
+            else if (edit[9] == true){                
+                if (play[9] == false) {
+                    play[9] = true;
+                    //osc2 light on
+                    document.getElementById("playLight9").style.backgroundColor = "green";
+                    if (m_play == true)
+                        track[9].start();
+                } 
+                else if (play[9] == true){
+                    play[9] = false;
+                    document.getElementById("playLight9").style.backgroundColor = "grey";
+                    track[9].stop();
+                }
             }
         }
 
-        //Oscillator Track
-        if (edit[1] == true){
-            //If oscillator is off, start it
-            if (play[0] == false){
-                play[0] = true;
-                osc.start();
-                document.getElementById("play").style.backgroundColor = "red";
-                document.getElementById("stop").style.backgroundColor = "grey";
-                }
-            //If oscillator is playing, stop it
-            else if (play[0] == true){
-                play[0] = false;
-                osc.stop();
-                document.getElementById("play").style.backgroundColor = "grey";
-                document.getElementById("stop").style.backgroundColor = "red";
-                }
-        }
-
-        //Synth Track
-        if (edit[2] == true){
-
-        }
+    //Who knows?
+    function playMe(clip){
+        var hiddenAudio = [
+            new Audio('./zAssets/Audio/helpmereremix.mp3'),
+            new Audio('./zAssets/Audio/VineBoom.mp3'),
+            new Audio('./zAssets/Audio/helpmerereremix.mp3'),
+            new Audio('./zAssets/Audio/Baba.mp3')
+        ];
+        hiddenAudio[clip].play();
     }
 
-    function playMe(){
-        hiddenAudio.play();
-    }
 </script>
 <body onload="loadMe()">
     <span class="settings">
         <img class="gear" src="./zAssets/settings.png" onclick="openSettings()">
         <img class="links" src="./zAssets/daDrip.png" onclick="openRefs()">
+        <div class="hiddenTwo" onclick="playMe(2)"></div>
         <div class="settings" id="settings">
             <center>Change Volume</center><br>
             Max
-            <input type="text" class="fieldInput" id="newMaxVol" onchange="setMaxVol()"> db<br>
+            <input type="text" class="fieldInput" id="newMaxVol" onchange="setMaxVol(this.value)"> db<br>
             Min
-            <input type="text" class="fieldInput" id="newMinVol" onchange="setMinVol()"> db<br>
+            <input type="text" class="fieldInput" id="newMinVol" onchange="setMinVol(this.value)"> db<br>
             GetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHead
-            GetOuttaMyHeadGet<text class="hiddenText" onclick="playMe()">Outta</text>MyHeadGetOuttaMyHead
+            GetOuttaMyHeadGet<text class="hiddenText" onclick="playMe(0)">Outta</text>MyHeadGetOuttaMyHead
             GetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHead
         </div>
     </span>
@@ -651,7 +887,7 @@
         </div>
 
         <div class="flex2">
-            <text class="flexLabel">Pointer</text>
+            <text class="flexLabel"><text onclick="playMe(1)">Pointer</text></text>
             <div class="flexBarOut">
                 <div class="flexBarIn" id="middleBar"></div>
             </div>
@@ -669,11 +905,16 @@
         <div class="displays">
             <!--Interface for play/pause/stop-->
             <div class="button1">
+                <!--Global Play/Stop for all tracks-->
                 <div class="play" id="play"></div>
                 <text class="play">Play</text>
                 <div class="stop" id="stop"></div>
                 <text class="stop">Stop</text>
-
+                <!--Displays the current track being edited-->
+                <div class="trackDisplay">
+                    <text class="trackDisplayFluff">Current Track:</text>
+                    <text class="trackDisplay" id="trackDisplay">Buffer</text>
+                </div>
             </div>
 
             <!--Interface for start/stop record-->>
@@ -709,7 +950,7 @@
                     <td class="playLight"><div class="playLight" id="playLight9"></div></td>
                 </tr>
                 <tr class="playVol">
-                    <td class="playVol">Empty</td>
+                    <td class="playVol"><div class="hiddenThree" onclick="playMe(3)"></td>
                     <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol1"></div></div></td>
                     <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol2"></div></div></td>
                     <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol3"></div></div></td>
@@ -730,10 +971,10 @@
         <input type="range" class="slider3" id="middle" min="1" max="100" value="1" step="1" oninput="setFlex(middle, value)">
 
         <!--Button to activate oscillator-->
-        <button class="playNote" onclick="playNote()">Play/Stop</button>
-        <button class="ChangeUp" onclick="playDrum()">NextTrack</button>
+        <button class="notePress" onclick="playTrack()">Play/Stop</button>
+        <button class="notePress3" onclick="playSound()">globplay</button>
         <button class="ChangeDown" onclick="playDrum()">LastTrack</button>
-        <button class="notePress2" onclick="playDrum()">ChangeTrack</button>
+        <button class="notePress2" onclick="changeTrack()">ChangeTrack</button>
     </span>
 </body>
 </html>
