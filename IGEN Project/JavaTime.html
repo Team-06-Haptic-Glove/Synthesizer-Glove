@@ -7,10 +7,9 @@
 <script src="./Tone.js"></script>
 
 <style>
+    /*All of the bodies inside which things are placed*/
     body {
-        background-image: url(./zAssets/wood.jpeg);
-    }
-
+        background-image: url(./zAssets/wood.jpeg);}
     span.main {
         position: absolute;
         background-image: url(./zAssets/blackground.jpg);
@@ -27,26 +26,20 @@
         height: 80%;
         margin: auto;
         overflow: hidden !important;
-        font-family: comic sans MS;
-    }
-
+        font-family: comic sans MS;}
     span.settings {
         position: absolute;
         background-color: transparent;
         width: 20%;
         height: 6%;
-        right: 5%;
-    }
-
+        right: 5%;}
     div.button1 {
         position: absolute;
         background-color: rgba(245, 245, 245, 0.25);
         width: 60%;
         height: 12%;
         left: 2%;
-        bottom: 65%;
-    }
-
+        bottom: 65%;}
     div.button2 {
         position: absolute;
         background-color: rgba(245, 245, 245, 0.25);
@@ -54,9 +47,7 @@
         height: 12%;
         left: 5%;
         bottom: 50%;
-        opacity: 50%;
-    }
-
+        opacity: 50%;}
     div.button3 {
         position: absolute;
         background-color: rgba(245, 245, 245, 0.25);
@@ -64,9 +55,7 @@
         height: 12%;
         left: 30%;
         bottom: 50%;
-        opacity: 50%;
-    }
-
+        opacity: 50%;}
     div.flex1 {
         position: inherit;
         background-image: url(./zAssets/wood2.jpeg);
@@ -75,9 +64,7 @@
         width: 33.33%;
         height: 18%;
         top: 0px;
-        left: 0%;
-    }
-
+        left: 0%;}
     div.flex2 {
         position: inherit;
         background-image: url(./zAssets/wood2.jpeg);
@@ -86,9 +73,7 @@
         width: 33.33%;
         height: 18%;
         top: 0px;
-        left: 33.33%;
-    }
-
+        left: 33.33%;}
     div.flex3 {
         position: inherit;
         background-image: url(./zAssets/wood2.jpeg);
@@ -97,9 +82,7 @@
         width: 33.33%;
         height: 18%;
         top: 0px;
-        left: 66.66%;
-    }
-
+        left: 66.66%;}
     div.flexBarOut {
         position: inherit;
         border: 8px solid black;
@@ -109,18 +92,14 @@
         height: 40%;
         left: 10px;
         bottom: 10px;
-        overflow: hidden;
-    }
-
+        overflow: hidden;}
     div.flexBarIn {
         background-color: #0AA30C;
         height: 100%;
         width: 1%;
         top: 0px;
         transition-property: background-color;
-        transition-duration: 0.4s;
-    }
-
+        transition-duration: 0.4s;}
     div.flexNum {
         position: inherit;
         background-color: white;
@@ -132,120 +111,66 @@
         font-weight: bold;
         font-size: 24px;
         text-align: center;
-        align-items: center;
-    }
-
-    input.slider1 {
-        position: absolute;
-        width: 20%;
-        height: 10%;
-        top: 120px;
-        right: 5%;
-    }
-
-    input.slider2 {
-        position: absolute;
-        width: 20%;
-        height: 10%;
-        top: 160px;
-        right: 5%;
-    }
-
-    input.slider3 {
-        position: absolute;
-        width: 20%;
-        height: 10%;
-        top: 200px;
-        right: 5%;
-    }
-
-    text.flexLabel {
-        position: inherit;
-        left: 0px;
-        right: 0px;
-        margin: auto;
-        top: 5px;
-        text-align: center;
-        font-weight: bold;
-        font-size: 24px;
-        ;
-        text-shadow: 1px 0 black;
-    }
-
-    button.notePress {
-        position: inherit;
-        background-image: url(./zAssets/metal.jpeg);
-        border: 5px solid #414647;
-        border-radius: 40px;
-        width: 80px;
-        height: 80px;
-        right: 5%;
-        bottom: 5%;
-        font-size: 10px;
-        font-weight: bold;
-        font-family: comic sans MS;
-        box-shadow: none;
-        outline: none;
-    }
-
-        button.notePress:active {
-            border-color: #585d5e;
-            box-shadow: none;
-            outline: none;
-        }
-    button.notePress2 {
-        position: inherit;
-        background-image: url(./zAssets/metal.jpeg);
-        border: 5px solid #414647;
-        border-radius: 40px;
-        width: 80px;
-        height: 80px;
-        right: 5%;
-        bottom: 16%;
-        font-size: 10px;
-        font-weight: bold;
-        font-family: comic sans MS;
-        box-shadow: none;
-        outline: none;
-    }
-
-        button.notePress2:active {
-            border-color: #585d5e;
-            box-shadow: none;
-            outline: none;
-        }
-    button.notePress3 {
-        position: inherit;
-        background-image: url(./zAssets/metal.jpeg);
-        border: 5px solid #414647;
-        border-radius: 40px;
-        width: 80px;
-        height: 80px;
-        right: 5%;
-        bottom: 27%;
-        font-size: 10px;
-        font-weight: bold;
-        font-family: comic sans MS;
-        box-shadow: none;
-        outline: none;
-    }
-        button.notePress3:active {
-            border-color: #585d5e;
-            box-shadow: none;
-            outline: none;
-        }
-    img.gear {
+        align-items: center;}
+    div.hiddenTwo{
         position: absolute;
         height: 90%;
-        right: 5px
-    }
-
-    img.links {
+        width: 50px;
+        right: 130px;}
+    div.hiddenThree{
+        position: relative;
+        width: 100%;
+        height: 50px;
+        bottom: -30%;}
+    div.play {
         position: absolute;
-        height: 85%;
-        right: 60px;
-    }
-
+        border: 10px solid black;
+        border-radius: 16px;
+        background-color: grey;
+        width: 30px;
+        height: 30px;
+        left: 120px;
+        top: 5px;
+        margin: 0;}
+    div.playLight{
+        background-color: grey;
+        border: 5px solid white;
+        border-radius: 20px;
+        width: 20px;
+        height: 20px;
+        left: 0px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+        margin: auto;}
+    div.playVol{
+        background-color: grey;
+        border: 5px solid white;
+        border-radius: 20px;
+        height: 90%;
+        width: 20px;
+        top: 0px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        margin: auto;}
+    div.references {
+        position: absolute;
+        border: 16px solid #696969;
+        border-radius: 36px;
+        border-bottom-right-radius: 80px;
+        background-color: white;
+        left: 0px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+        width: 90%;
+        height: 80%;
+        z-index: 1;
+        margin: auto;
+        overflow: hidden !important;
+        font-family: comic sans MS;
+        display: none;}
     div.settings {
         position: inherit;
         border: 8px solid #696969;
@@ -263,54 +188,7 @@
         font-weight: bold;
         font-family: comic sans MS;
         overflow: hidden;
-        word-wrap: break-word;
-    }
-
-    div.references {
-        position: absolute;
-        border: 16px solid #696969;
-        border-radius: 36px;
-        border-bottom-right-radius: 80px;
-        background-color: white;
-        left: 0px;
-        right: 0px;
-        top: 0px;
-        bottom: 0px;
-        width: 90%;
-        height: 80%;
-        z-index: 1;
-        margin: auto;
-        overflow: hidden !important;
-        font-family: comic sans MS;
-        display: none;
-    }
-
-    div.play {
-        position: absolute;
-        border: 10px solid black;
-        border-radius: 16px;
-        background-color: grey;
-        width: 30px;
-        height: 30px;
-        left: 120px;
-        top: 5px;
-        margin: 0;
-    }
-
-    text.play {
-        position: absolute;
-        background: rgba(245,245,245, 0.2);
-        width: 100px;
-        left: 15px;
-        top: 10px;
-        font-size: 42px;
-        font-weight: bold;
-        font-family: comic sans MS;
-        text-align: center;
-        text-shadow: royalblue;
-        color: black;
-    }
-
+        word-wrap: break-word;}
     div.stop {
         position: absolute;
         border: 10px solid black;
@@ -320,83 +198,7 @@
         height: 30px;
         left: 300px;
         top: 5px;
-        margin: 0;
-    }
-
-    text.stop {
-        position: absolute;
-        background: rgba(245,245,245, 0.2);
-        width: 100px;
-        left: 190px;
-        top: 10px;
-        font-size: 42px;
-        font-weight: bold;
-        font-family: comic sans MS;
-        text-align: center;
-        text-shadow: royalblue;
-        color: black;
-    }
-
-    input.fieldInput {
-        width: 40px;
-    }
-    button.track{
-        position: absolute;
-        width: 100px;
-        height: 100px;
-    }
-    table.playStop{
-        position: absolute;
-        width: 60%;
-        height: 42%;
-        left: 5%;
-        bottom: 5%;
-    }
-    tr.playName{
-        background:rgba(245, 245, 245, 0.25);
-        height: 20%;
-        text-align: center;
-    }
-    tr.playLight{
-        height: 20%;
-    }
-    tr.playVol{
-        height: 60%;
-    }
-    td.playName{
-        width: 10%;
-        font-family: comic sans MS;
-        font-size: 24px;
-        font-weight: bold;
-        color: yellow;
-    }
-    div.playLight{
-        background-color: grey;
-        border: 5px solid white;
-        border-radius: 20px;
-        width: 20px;
-        height: 20px;
-        left: 0px;
-        right: 0px;
-        top: 0px;
-        bottom: 0px;
-        margin: auto;
-    }
-    div.playVol{
-        background-color: grey;
-        border: 5px solid white;
-        border-radius: 20px;
-        height: 90%;
-        width: 20px;
-        top: 0px;
-        bottom: 0px;
-        left: 0px;
-        right: 0px;
-        margin: auto;
-    }
-    text.hiddenText:hover{
-        color:grey;
-    }
+        margin: 0;}
     div.trackDisplay {
         position: inherit;
         border: 8px solid black;
@@ -408,9 +210,167 @@
         bottom: 0px;
         left: 400px;
         margin: auto;
-        padding-left: 10px;
+        padding-left: 10px;}
+    table.playStop{
+        position: absolute;
+        width: 60%;
+        height: 42%;
+        left: 5%;
+        bottom: 5%;}
+    tr.playName{
+        background:rgba(245, 245, 245, 0.25);
+        height: 20%;
+        text-align: center;}
+    tr.playLight{
+        height: 20%;}
+    tr.playVol{
+        height: 60%;}
+    td.playName{
+        width: 10%;
+        font-family: comic sans MS;
+        font-size: 24px;
+        font-weight: bold;
+        color: yellow;}
+    
+    /*All of the input types*/
+    button.track{
+        position: absolute;
+        width: 100px;
+        height: 100px;}
+    button.notePress {
+        position: inherit;
+        background-image: url(./zAssets/metal.jpeg);
+        border: 5px solid #414647;
+        border-radius: 40px;
+        width: 80px;
+        height: 80px;
+        right: 5%;
+        bottom: 5%;
+        font-size: 10px;
+        font-weight: bold;
+        font-family: comic sans MS;
+        box-shadow: none;
+        outline: none;}
+        button.notePress:active {
+            border-color: #585d5e;
+            box-shadow: none;
+            outline: none;}
+    button.notePress2 {
+        position: inherit;
+        background-image: url(./zAssets/metal.jpeg);
+        border: 5px solid #414647;
+        border-radius: 40px;
+        width: 80px;
+        height: 80px;
+        right: 5%;
+        bottom: 16%;
+        font-size: 10px;
+        font-weight: bold;
+        font-family: comic sans MS;
+        box-shadow: none;
+        outline: none;}
+        button.notePress2:active {
+            border-color: #585d5e;
+            box-shadow: none;
+            outline: none;}
+    button.notePress3 {
+        position: inherit;
+        background-image: url(./zAssets/metal.jpeg);
+        border: 5px solid #414647;
+        border-radius: 40px;
+        width: 80px;
+        height: 80px;
+        right: 5%;
+        bottom: 27%;
+        font-size: 10px;
+        font-weight: bold;
+        font-family: comic sans MS;
+        box-shadow: none;
+        outline: none;}
+        button.notePress3:active {
+            border-color: #585d5e;
+            box-shadow: none;
+            outline: none;}
+    input.fieldInput {
+        width: 40px;}
+    input.slider1 {
+        position: absolute;
+        width: 20%;
+        height: 10%;
+        top: 120px;
+        right: 5%;}
+    input.slider2 {
+        position: absolute;
+        width: 20%;
+        height: 10%;
+        top: 160px;
+        right: 5%;}
+    input.slider3 {
+        position: absolute;
+        width: 20%;
+        height: 10%;
+        top: 200px;
+        right: 5%;}
 
-    }
+    /*Embellishments such as text and images*/
+    img.gear {
+        position: absolute;
+        height: 90%;
+        right: 5px}
+    img.links {
+        position: absolute;
+        height: 85%;
+        right: 60px;}
+    text.flexLabel {
+        position: inherit;
+        left: 0px;
+        right: 0px;
+        margin: auto;
+        top: 5px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 24px;
+        ;
+        text-shadow: 1px 0 black;}
+        text.hiddenText:hover{
+        color:grey;}
+    text.play {
+        position: absolute;
+        background: rgba(245,245,245, 0.2);
+        width: 100px;
+        left: 15px;
+        top: 10px;
+        font-size: 42px;
+        font-weight: bold;
+        font-family: comic sans MS;
+        text-align: center;
+        text-shadow: royalblue;
+        color: black;}
+    text.stop {
+        position: absolute;
+        background: rgba(245,245,245, 0.2);
+        width: 100px;
+        left: 190px;
+        top: 10px;
+        font-size: 42px;
+        font-weight: bold;
+        font-family: comic sans MS;
+        text-align: center;
+        text-shadow: royalblue;
+        color: black;}
+    text.trackDisplay{
+        position: absolute;
+        width: 200px;
+        top: 0px;
+        bottom: 0px;
+        right: 70px;
+        margin: auto;
+        padding-left: 10px;
+        padding-right: 10px;
+        text-align: center;
+        font-size: 40px;
+        font-family: comic sans MS;
+        font-weight: bold;}
     text.trackDisplayFluff{
         position: absolute;
         top: 0px;
@@ -418,30 +378,7 @@
         margin: auto;
         font-size: 40px;
         font-family: comic sans MS;
-        font-weight: bold;
-    }
-    text.trackDisplay{
-        position: absolute;
-        top: 0px;
-        bottom: 0px;
-        margin: auto;
-        right: 20%;
-        font-size: 40px;
-        font-family: comic sans MS;
-        font-weight: bold;
-    }
-    div.hiddenTwo{
-        position: absolute;
-        height: 90%;
-        width: 50px;
-        right: 130px;
-    }
-    div.hiddenThree{
-        position: relative;
-        width: 100%;
-        height: 50px;
-        bottom: -30%;
-    }
+        font-weight: bold;}
 </style>
 
 <script>
@@ -462,7 +399,7 @@
         var references = str.split(" ");
         console.log(references);
 
-//Create variables
+//Create variables from Serial Port
     var accel        = references[0];
     var rotate       = references[1];
     var pointerFlex  = references[2];
@@ -474,26 +411,21 @@
 
     //Declaring aspect variables
     var volume;
-    var maxVol;
-    var minVol;
+        var maxVol;
+        var minVol;
     var hertz;
-    var maxHertz;
-    var minHertz;
-    var play;
-    var edit;
-
-    var osc;
-    var kickDrum;
-    var backtrack;
-
-    // mute the output
-    var hertzTest;
-    var setValMax;
-
-    var trackName;
+        var maxHertz;
+        var minHertz;
+    //Declare additional variables
+    var hertzTest; //To be used in creating octaves from frequency
+    var setValMax; //Max value decided for input sliders, range from setVal -> setValMax
+    //Declare variable arrays
+    var trackName; //Array of track names
+    var play;      //Array for whether current track is active/low
+    var edit;      //Array to determine which track is currently being altered by sensor inputs
 
 //------Functions-------//
-    //loadMe() Loads and initializes all variables
+    //loadMe() On page load, initializes all variables
     function loadMe(){
         showingSet = false;
         showingRef = false;
@@ -516,7 +448,7 @@
         currentTrack = 0;
 
         //Turning buffer/stop light on when site is loaded
-        document.getElementById("playLight0").style.backgroundColor = "green";
+        document.getElementById("playLight0").style.backgroundColor = "#2DD201";
         document.getElementById("stop").style.backgroundColor = "red";
 
 
@@ -566,15 +498,11 @@
         }
     }
 
-    //setMaxVol Allows user to set maximum volume in decibels using the textbox
-    //setMinVol Allows user to set minimum volume in decibels using the textbox
-    function setMaxVol(volume){ maxVol = volume; console.log(maxVol)}
-    function setMinVol(volume){ minVol = volume; console.log(minVol)}
-
     //setFlex(Finger, Value) Takes in variable value and displays numerically/using bar
     //Finger: The finger which is affecting the bar
     //Value: The variable input created by the flex sensors
     function setFlex(finger, value){
+        //Create temporary local variable to hold the slider value
         var setVal = value;
 
         if (finger == thumb){
@@ -623,6 +551,13 @@
         }
         if (finger == middle){
             //Adjust 1-100 range to bpm with range of 0-5 with increments of 0.1
+            bpmtest = 100 - setVal;
+            bpmtest = (Math.round(bpmtest/5)*5)/100;
+
+            for (i = 0; i < 8; i++){
+                if (edit[i] == true)
+                    loop[i].interval = bpmtest;
+            }
 
             //Update UI
             document.getElementById("thumbBar").style.width = setVal + "%";
@@ -692,7 +627,7 @@
 
         if (edit[0] == true)
             //buffer light on
-            document.getElementById("playLight0").style.backgroundColor = "green";
+            document.getElementById("playLight0").style.backgroundColor = "#2DD201";
         else if (edit[0] == false)
             //buffer light off
             document.getElementById("playLight0").style.backgroundColor = "grey";
@@ -706,7 +641,7 @@
                 if (play[1] == false) {
                     play[1] = true;
                     //kick light on
-                    document.getElementById("playLight1").style.backgroundColor = "green";
+                    document.getElementById("playLight1").style.backgroundColor = "#2DD201";
                     //looping the sound
                     loop[1] = new Tone.Loop(time => {
                         track[1].triggerAttackRelease("C1", "8n", time);
@@ -723,7 +658,7 @@
                 if (play[2] == false) {
                     play[2] = true;
                     //snare light on
-                    document.getElementById("playLight2").style.backgroundColor = "green";
+                    document.getElementById("playLight2").style.backgroundColor = "#2DD201";
                     loop[2] = new Tone.Loop(time =>{
                         track[2].triggerAttackRelease("4n",time)
                     },"1n").start(0);
@@ -739,7 +674,7 @@
                 if (play[3] == false) {
                     play[3] = true;
                     //synth1 light on
-                    document.getElementById("playLight3").style.backgroundColor = "green";
+                    document.getElementById("playLight3").style.backgroundColor = "#2DD201";
                     loop[3] = new Tone.Loop(time =>{
                         track[3].triggerAttackRelease(freq[3], "8n", time)
                     },"1n").start(0);
@@ -755,7 +690,7 @@
                 if (play[4] == false) {
                     play[4] = true;
                     //synth2 light on
-                    document.getElementById("playLight4").style.backgroundColor = "green";
+                    document.getElementById("playLight4").style.backgroundColor = "#2DD201";
                     loop[4] = new Tone.Loop(time =>{
                         track[4].triggerAttackRelease(freq[4], "8n", time)
                     },"1n").start(0);
@@ -771,7 +706,7 @@
                 if (play[5] == false) {
                     play[5] = true;
                     //synth3 light on
-                    document.getElementById("playLight5").style.backgroundColor = "green";
+                    document.getElementById("playLight5").style.backgroundColor = "#2DD201";
                     loop[5] = new Tone.Loop(time =>{
                         track[5].triggerAttackRelease(freq[5], "8n", time)
                     },"1n").start(0);
@@ -787,7 +722,7 @@
                 if (play[6] == false) {
                     play[6] = true;
                     //synth4 light on
-                    document.getElementById("playLight6").style.backgroundColor = "green";
+                    document.getElementById("playLight6").style.backgroundColor = "#2DD201";
                     loop[6] = new Tone.Loop(time =>{
                         track[6].triggerAttackRelease(freq[6], "8n", time)
                     },"1n").start(0);
@@ -803,7 +738,7 @@
                 if (play[7] == false) {
                     play[7] = true;
                     //synth5 light on
-                    document.getElementById("playLight7").style.backgroundColor = "green";
+                    document.getElementById("playLight7").style.backgroundColor = "#2DD201";
                     loop[7] = new Tone.Loop(time =>{
                         track[7].triggerAttackRelease(freq[7], "8n", time)
                     },"1n").start(0);
@@ -819,7 +754,7 @@
                 if (play[8] == false) {
                     play[8] = true;
                     //osc1 light on
-                    document.getElementById("playLight8").style.backgroundColor = "green";
+                    document.getElementById("playLight8").style.backgroundColor = "#2DD201";
                     if (m_play == true)
                         track[8].start();
                 } 
@@ -835,7 +770,7 @@
                 if (play[9] == false) {
                     play[9] = true;
                     //osc2 light on
-                    document.getElementById("playLight9").style.backgroundColor = "green";
+                    document.getElementById("playLight9").style.backgroundColor = "#2DD201";
                     if (m_play == true)
                         track[9].start();
                 } 
@@ -846,6 +781,11 @@
                 }
             }
         }
+
+    //setMaxVol Allows user to set maximum volume in decibels using the textbox
+    //setMinVol Allows user to set minimum volume in decibels using the textbox
+    function setMaxVol(volume){ maxVol = volume; console.log(maxVol)}
+    function setMinVol(volume){ minVol = volume; console.log(minVol)}
 
     //Who knows?
     function playMe(clip){
@@ -882,6 +822,7 @@
         https://github.com/Team-06-Haptic-Glove/MIDI-Controller
     </div>
     <span class="main">
+        <!--Divs to display current flex sensor readings-->
         <div class="flex1">
             <text class="flexLabel">ThumbyThicc</text>
             <div class="flexBarOut">
@@ -889,7 +830,6 @@
             </div>
             <div class="flexNum" id="flexNum1">uwu</div>
         </div>
-
         <div class="flex2">
             <text class="flexLabel"><text onclick="playMe(1)">Pointer</text></text>
             <div class="flexBarOut">
@@ -897,7 +837,6 @@
             </div>
             <div class="flexNum" id="flexNum2">o_O</div>
         </div>
-
         <div class="flex3">
             <text class="flexLabel">Middle</text>
             <div class="flexBarOut">
@@ -927,8 +866,9 @@
             <!--Interface for current mode toggle-->>
             <div class="button3"></div>
         </div>
-
+            <!--Table to display track information-->
             <table class="playStop">
+                <!--Top row displays track names-->
                 <tr class="playName">
                     <td class="playName">Buffer</td>
                     <td class="playName">Kick</td>
@@ -941,6 +881,7 @@
                     <td class="playName">Osc 1</td>
                     <td class="playName">Osc 2</td>
                 </tr>
+                <!--Middle row lights up when track is active (not being edited)-->
                 <tr class="playLight">
                     <td class="playLight"><div class="playLight" id="playLight0"></div></td>
                     <td class="playLight"><div class="playLight" id="playLight1"></div></td>
@@ -953,6 +894,7 @@
                     <td class="playLight"><div class="playLight" id="playLight8"></div></td>
                     <td class="playLight"><div class="playLight" id="playLight9"></div></td>
                 </tr>
+                <!--Bottom row has bars displaying current volume-->
                 <tr class="playVol">
                     <td class="playVol"><div class="hiddenThree" onclick="playMe(3)"></td>
                     <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol1"></div></div></td>
@@ -965,7 +907,6 @@
                     <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol8"></div></div></td>
                     <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol9"></div></div></td>
                 </tr>
-
             </table>
 
 
