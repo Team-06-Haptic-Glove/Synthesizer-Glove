@@ -490,6 +490,8 @@
     var hertzTest;
     var setValMax;
 
+    var trackName;
+
 //------Functions-------//
     //loadMe() Loads and initializes all variables
     function loadMe(){
@@ -504,6 +506,7 @@
         play = [false, false, false, false, false, false, false, false, false, false];
         m_play = false
         edit = [true, false, false, false, false, false, false, false, false, false];
+        trackName = ["Buffer", "Kick", "Snare", "Synth 1", "Synth 2", "Synth 3", "Synth 4", "Synth 5", "Osc 1", "Osc 2"];
         loop = [0,0,0,0,0,0,0,0,0,0];
         track = [0,0,0,0,0,0,0,0,0,0];
         freq = ["C1", "C1", "C1", "C1", "C1", "C1", "C1", "C1", "C1", "C1"]
@@ -576,8 +579,8 @@
 
         if (finger == thumb){
             //Adjusts raw volume and set as the actual volume
-                volume = ( (minVol) + ( (maxVol-minVol)*(setVal/100) ) );
-                volume = volume.toFixed(1);
+                volume = ( Number(minVol) + ( (Number(maxVol)-Number(minVol))*(setVal/100) ) );
+                volume = Number(volume.toFixed(1));
             //Checks for previous button to be correct one, prevents editing of all tracks
                 for (i = 0; i < edit.length; i++){
                     if (edit[i] == true)
@@ -685,6 +688,7 @@
         */
         edit = [false, false, false, false, false, false, false, false, false, false]
         edit[currentTrack] = true;
+        document.getElementById("trackDisplay").innerHTML = trackName[currentTrack];
 
         if (edit[0] == true)
             //buffer light on
