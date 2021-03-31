@@ -144,7 +144,7 @@
         bottom: 0px;
         margin: auto;}
     div.playVol{
-        background-color: limegreen;
+        background-color: #0AA30C;
         border: 5px solid white;
         border-radius: 20px;
         height: 90%;
@@ -156,10 +156,12 @@
         margin: auto;
         overflow: hidden;}
     div.playVolInner{
+        position: inherit;
         background-color: grey;
         width: 100%;
         height: 100%;
-        bottom: 0px;}
+        bottom: 0px;
+        margin: auto;}
     div.references {
         position: absolute;
         border: 16px solid #696969;
@@ -435,6 +437,7 @@
     var play;      //Array for whether current track is active/low
     var edit;      //Array to determine which track is currently being altered by sensor inputs
     var playVol;   //Array of all the volume tracks
+        var playVolInner;
 
 //------Functions-------//
     //loadMe() On page load, initializes all variables
@@ -454,6 +457,7 @@
         edit = [true, false, false, false, false, false, false, false, false, false];
         trackName = ["Buffer", "Kick", "Snare", "Synth 1", "Synth 2", "Synth 3", "Synth 4", "Synth 5", "Osc 1", "Osc 2"];
         playVol = ["", "playVol1","playVol2","playVol3","playVol4","playVol5","playVol6","playVol7","playVol8","playVol9",]
+        playVolInner = ["", "playVolInner1","playVolInner2","playVolInner3","playVolInner4","playVolInner5","playVolInner6","playVolInner7","playVolInner8","playVolInner9",]
         loop = [0,0,0,0,0,0,0,0,0,0];
         track = [0,0,0,0,0,0,0,0,0,0];
         freq = ["C1", "C1", "C1", "C1", "C1", "C1", "C1", "C1", "C1", "C1"]
@@ -528,8 +532,15 @@
                 for (i = 0; i < edit.length; i++){
                     if (edit[i] == true){
                         track[i].volume.value = volume;
+                        var volDivInner = playVolInner[i];
                         var volDiv = playVol[i];
-                        document.getElementById(volDiv).style.height = (100 - setVal) + "%";
+                        document.getElementById(volDivInner).style.height = (100-setVal) + "%";
+                        if (setVal < 30)
+                            document.getElementById(volDiv).style.backgroundColor = '#0AA30C';
+                        else if (setVal > 40 && setVal < 90)
+                            document.getElementById(volDiv).style.backgroundColor = '#D0D40F';
+                        else if (setVal > 90)
+                            document.getElementById(volDiv).style.backgroundColor = '#E12120';
                     }
                 }
             //Update the UI
@@ -805,8 +816,8 @@
     function setMaxVol(volume){ maxVol = volume; console.log(maxVol)}
     function setMinVol(volume){ minVol = volume; console.log(minVol)}
     //setMax/MinBPM Allows user to set maximum/minimum BPM using the text box
-    function setMaxVol(volume){ maxVol = volume; console.log(maxVol)}
-    function setMinVol(volume){ minVol = volume; console.log(minVol)}
+    function setMaxBPM(beats){ bpmMax = beats; console.log(bpmMax)}
+    function setMinBPM(beats){ bpmMin = beats; console.log(bpmMin)}
 
     //Who knows?
     function playMe(clip){
@@ -921,15 +932,15 @@
                 <!--Bottom row has bars displaying current volume-->
                 <tr class="playVol">
                     <td class="playVol"><div class="hiddenThree" onclick="playMe(3)"></td>
-                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol1"></div></div></td>
-                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol2"></div></div></td>
-                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol3"></div></div></td>
-                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol4"></div></div></td>
-                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol5"></div></div></td>
-                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol6"></div></div></td>
-                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol7"></div></div></td>
-                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol8"></div></div></td>
-                    <td class="playVol"><div class="playVol"><div class="playVolInner" id="playVol9"></div></div></td>
+                    <td class="playVol"><div class="playVol" id="playVol1"><div class="playVolInner" id="playVolInner1"></div></div></td>
+                    <td class="playVol"><div class="playVol" id="playVol2"><div class="playVolInner" id="playVolInner2"></div></div></td>
+                    <td class="playVol"><div class="playVol" id="playVol3"><div class="playVolInner" id="playVolInner3"></div></div></td>
+                    <td class="playVol"><div class="playVol" id="playVol4"><div class="playVolInner" id="playVolInner4"></div></div></td>
+                    <td class="playVol"><div class="playVol" id="playVol5"><div class="playVolInner" id="playVolInner5"></div></div></td>
+                    <td class="playVol"><div class="playVol" id="playVol6"><div class="playVolInner" id="playVolInner6"></div></div></td>
+                    <td class="playVol"><div class="playVol" id="playVol7"><div class="playVolInner" id="playVolInner7"></div></div></td>
+                    <td class="playVol"><div class="playVol" id="playVol8"><div class="playVolInner" id="playVolInner8"></div></div></td>
+                    <td class="playVol"><div class="playVol" id="playVol9"><div class="playVolInner" id="playVolInner9"></div></div></td>
                 </tr>
             </table>
 
