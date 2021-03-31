@@ -144,7 +144,7 @@
         bottom: 0px;
         margin: auto;}
     div.playVol{
-        background-color: grey;
+        background-color: limegreen;
         border: 5px solid white;
         border-radius: 20px;
         height: 90%;
@@ -153,7 +153,13 @@
         bottom: 0px;
         left: 0px;
         right: 0px;
-        margin: auto;}
+        margin: auto;
+        overflow: hidden;}
+    div.playVolInner{
+        background-color: grey;
+        width: 100%;
+        height: 100%;
+        bottom: 0px;}
     div.references {
         position: absolute;
         border: 16px solid #696969;
@@ -321,6 +327,8 @@
         position: absolute;
         height: 85%;
         right: 60px;}
+    text.fieldLabel{
+        font-size: 14px;}
     text.flexLabel {
         position: inherit;
         left: 0px;
@@ -426,6 +434,7 @@
     var trackName; //Array of track names
     var play;      //Array for whether current track is active/low
     var edit;      //Array to determine which track is currently being altered by sensor inputs
+    var playVol;   //Array of all the volume tracks
 
 //------Functions-------//
     //loadMe() On page load, initializes all variables
@@ -444,6 +453,7 @@
         m_play = false
         edit = [true, false, false, false, false, false, false, false, false, false];
         trackName = ["Buffer", "Kick", "Snare", "Synth 1", "Synth 2", "Synth 3", "Synth 4", "Synth 5", "Osc 1", "Osc 2"];
+        playVol = ["", "playVol1","playVol2","playVol3","playVol4","playVol5","playVol6","playVol7","playVol8","playVol9",]
         loop = [0,0,0,0,0,0,0,0,0,0];
         track = [0,0,0,0,0,0,0,0,0,0];
         freq = ["C1", "C1", "C1", "C1", "C1", "C1", "C1", "C1", "C1", "C1"]
@@ -516,8 +526,11 @@
                 volume = Number(volume.toFixed(1));
             //Checks for previous button to be correct one, prevents editing of all tracks
                 for (i = 0; i < edit.length; i++){
-                    if (edit[i] == true)
+                    if (edit[i] == true){
                         track[i].volume.value = volume;
+                        var volDiv = playVol[i];
+                        document.getElementById(volDiv).style.height = (100 - setVal) + "%";
+                    }
                 }
             //Update the UI
             document.getElementById("pointerBar").style.width = setVal + "%";
@@ -564,7 +577,7 @@
             }
             //Update UI
             document.getElementById("thumbBar").style.width = setVal + "%";
-            document.getElementById("flexNum3").innerHTML = (60 / (Number(tempBPM))).toFixed(0) + "BPM";
+            document.getElementById("flexNum3").innerHTML = (60 / (Number(tempBPM))).toFixed(0) + " BPM";
             if (setVal < 30)
                 document.getElementById("thumbBar").style.backgroundColor = '#0AA30C';
             else if (setVal > 40 && setVal < 90)
@@ -605,6 +618,7 @@
     }
 
     //changeTrack() Cycles to next / previous? track on button press
+    //Link changeTrack to swipe gesture from glove
     function changeTrack(){
         Tone.start();
         console.log(currentTrack);
@@ -787,8 +801,10 @@
             }
         }
 
-    //setMaxVol Allows user to set maximum volume in decibels using the textbox
-    //setMinVol Allows user to set minimum volume in decibels using the textbox
+    //setMax/MinVol Allows user to set maximum/minimum volume in decibels using the textbox
+    function setMaxVol(volume){ maxVol = volume; console.log(maxVol)}
+    function setMinVol(volume){ minVol = volume; console.log(minVol)}
+    //setMax/MinBPM Allows user to set maximum/minimum BPM using the text box
     function setMaxVol(volume){ maxVol = volume; console.log(maxVol)}
     function setMinVol(volume){ minVol = volume; console.log(minVol)}
 
@@ -811,13 +827,16 @@
         <div class="hiddenTwo" onclick="playMe(2)"></div>
         <div class="settings" id="settings">
             <center>Change Volume</center><br>
-            Max
-            <input type="text" class="fieldInput" id="newMaxVol" onchange="setMaxVol(this.value)"> db<br>
-            Min
-            <input type="text" class="fieldInput" id="newMinVol" onchange="setMinVol(this.value)"> db<br>
-            GetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHead
-            GetOuttaMyHeadGet<text class="hiddenText" onclick="playMe(0)">Outta</text>MyHeadGetOuttaMyHead
-            GetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHeadGetOuttaMyHead
+                <text class="fieldLabel">Max Vol (Decibels)</text>
+                <input type="text" class="fieldInput" id="newMaxVol" onchange="setMaxVol(this.value)"> db<br>
+                <text class="fieldLabel">Min Vol (Decibels)</text>
+                <input type="text" class="fieldInput" id="newMinVol" onchange="setMinVol(this.value)"> db<br>
+            <center>Change BPM</center>
+            <center><text style="font-size: 14px;">BPM <text class="hiddenText" onclick="playMe(0)">cannot</text> be <= 0</text></center><br>
+                <text class="fieldLabel">Max BPM (BPM)</text>
+                <input type="text" class="fieldInput" id="newMaxBPM" onchange="setMaxBPM(this.value)"> bpm<br>
+                <text class="fieldLabel">Max BPM (BPM)</text>
+                <input type="text" class="fieldInput" id="newMinBPM" onchange="setMinBPM(this.value)"> bpm
         </div>
     </span>
     <div class="references" id="references">
@@ -918,7 +937,7 @@
         <!--Inputs to simulate flex sensors, remove later?-->
         <input type="range" class="slider1" id="thumb" min="1" max="100" value="1" step="1" oninput="setFlex(thumb, value)">
         <input type="range" class="slider2" id="pointer" min="1" max="100" value="1" step="1" oninput="setFlex(pointer, value)">
-        <input type="range" class="slider3" id="middle" min="0" max="100" value="1" step="1" oninput="setFlex(middle, value)">
+        <input type="range" class="slider3" id="middle" min="0" max="100" value="0" step="1" oninput="setFlex(middle, value)">
 
         <!--Button to activate oscillator-->
         <button class="notePress" onclick="playTrack()">Play/Stop</button>
