@@ -416,6 +416,9 @@
     var hertz;
         var maxHertz;
         var minHertz;
+    var bpmtest;
+    var bpmMax;
+    var bpmMin;
     //Declare additional variables
     var hertzTest; //To be used in creating octaves from frequency
     var setValMax; //Max value decided for input sliders, range from setVal -> setValMax
@@ -435,6 +438,8 @@
         hertz = 0;
         maxHertz = 1000;
         minHertz = 0;
+        bpmMax = 240;
+        bpmMin = 30;
         play = [false, false, false, false, false, false, false, false, false, false];
         m_play = false
         edit = [true, false, false, false, false, false, false, false, false, false];
@@ -550,18 +555,16 @@
 
         }
         if (finger == middle){
-            //Adjust 1-100 range to bpm with range of 0-5 with increments of 0.1
-            bpmtest = 100 - setVal;
-            bpmtest = (Math.round(bpmtest/5)*5)/100;
-
+            //Adjust 1-100 range to bpm with range of 0-1 with increments of 0.1
+            var tempBPM = 60 / (((Number(bpmMax)-Number(bpmMin))*(setVal/100)) + Number(bpmMin));
+            tempBPM = (Math.round((tempBPM*100)/5)*5)/100;
             for (i = 0; i < 8; i++){
                 if (edit[i] == true)
-                    loop[i].interval = bpmtest;
+                    loop[i].interval = (tempBPM);
             }
-
             //Update UI
             document.getElementById("thumbBar").style.width = setVal + "%";
-            document.getElementById("flexNum3").innerHTML = setVal + "%";
+            document.getElementById("flexNum3").innerHTML = (60 / (Number(tempBPM))).toFixed(0) + "BPM";
             if (setVal < 30)
                 document.getElementById("thumbBar").style.backgroundColor = '#0AA30C';
             else if (setVal > 40 && setVal < 90)
@@ -574,6 +577,8 @@
         console.clear();
         console.log("Volume set to: " + volume + "db");
         console.log("Pitch set to: " + hertz + "hz");
+        console.log("BPM set to: " + 60 / (Number(tempBPM)) + "BPM");
+        console.log(tempBPM);
     }
 
     //playSound() Acts as the global enable play/stop
@@ -913,7 +918,7 @@
         <!--Inputs to simulate flex sensors, remove later?-->
         <input type="range" class="slider1" id="thumb" min="1" max="100" value="1" step="1" oninput="setFlex(thumb, value)">
         <input type="range" class="slider2" id="pointer" min="1" max="100" value="1" step="1" oninput="setFlex(pointer, value)">
-        <input type="range" class="slider3" id="middle" min="1" max="100" value="1" step="1" oninput="setFlex(middle, value)">
+        <input type="range" class="slider3" id="middle" min="0" max="100" value="1" step="1" oninput="setFlex(middle, value)">
 
         <!--Button to activate oscillator-->
         <button class="notePress" onclick="playTrack()">Play/Stop</button>
