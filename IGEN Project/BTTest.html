@@ -1,0 +1,34 @@
+<html>
+<head></head>
+<script>
+//Import Dependencies
+    const SerialPort = require("serialport");
+    const Readline = require("@serialport/parser-readline");
+
+    //Define Serial port
+    const port = new SerialPort('/dev/tty-usbserial1');
+    //Serial Port Parser
+        const parser = new Readline();
+        port.pipe(parser);
+
+    //Read Serial Port data
+        parser.on("data", (line));
+        console.log(line);
+
+        var references = line.split(" ");
+        console.log(references);
+
+//Create variables from Serial Port
+    /*var accel        = references[0];
+    var rotate       = references[1];
+    var pointerFlex  = references[2];
+    var middleFlex   = references[3];
+    var thumbFlex    = references[4];
+    var buttonOne    = references[5];
+    var buttonTwo    = references[6];
+    var buttonThree  = references[7];*/
+</script>
+<body>
+    
+</body>
+</html>

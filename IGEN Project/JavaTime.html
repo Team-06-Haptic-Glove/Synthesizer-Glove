@@ -5,6 +5,7 @@
     <title>Glove Receiver</title>
 </head>
 <script src="./Tone.js"></script>
+<script src="./require.js"></script>
 
 <style>
     /*All of the bodies inside which things are placed*/
@@ -27,14 +28,6 @@
         margin: auto;
         overflow: hidden !important;
         font-family: comic sans MS;}
-    span.references{
-        position: inherit;
-        background-color: royalblue;
-        width: 800px;
-        height: 50px;
-        left: 0px;
-        top: 0px;
-    }
     span.settings {
         position: absolute;
         background-color: transparent;
@@ -206,7 +199,7 @@
         overflow: hidden;
         word-wrap: break-word;}
     div.sites{
-        position: inherit;
+        position: absolute;
         background-color: rgba(245, 245, 245, 0.5);
         border: 6px solid black;
         border-radius: 20px;
@@ -215,12 +208,12 @@
         right: 50px;
         bottom: 50px;
         padding: 5px 10px 10px 5px;
+        overflow: hidden;
         overflow-x: auto;
         overflow-y: scroll;
         font-size: 18px;
         font-weight: bold;
-        font-family: comic sans MS;
-    }
+        font-family: comic sans MS;}
     div.stop {
         position: absolute;
         border: 10px solid black;
@@ -269,6 +262,24 @@
         left: 400px;
         margin: auto;
         padding-left: 10px;}
+    table.about{
+        position: absolute;
+        background: rgba(245, 245, 245, 0.5);
+        border: 8px solid black;
+        border-radius: 28px;
+        width: 1150px;
+        height: 65%;
+        right: 50px;
+        top: 50px;
+        overflow: hidden;}
+    table.members{
+        position: absolute;
+        width: 90%;
+        height: 50%;
+        left: 0px;
+        right: 0px;
+        top: 20px;
+        margin: auto;}
     table.playStop{
         position: absolute;
         width: 60%;
@@ -296,13 +307,76 @@
         height: 20%;}
     tr.playVol{
         height: 60%;}
+    td.aboutGlove{
+        position: absolute;
+        border-radius: 10px 10px 10px 10px;
+        width: 100%;
+        height: 100%;
+        display: block;}
+    td.aboutTeam{
+        position: absolute;
+        border-radius: 10px 10px 10px 10px;
+        width: 100%;
+        height: 100%;
+        display: none;}
+    td.aboutTabGlove{
+        background:rgba(245, 245, 245, 0.5);
+        border: 8px solid black;
+        border-radius: 28px 10px 10px 10px;
+        height: 15%;
+        font-size: 40px;
+        font-weight: bold;
+        font-family: comic sans MS;
+        text-align: center;}
+        td.aboutTabGlove:hover{
+            background:rgba(100, 100, 100, 0.5);
+            color: springgreen;}
+    td.aboutTabTeam{
+        background:rgba(245, 245, 245, 0.5);
+        border: 8px solid black;
+        border-radius: 10px 28px 10px 10px;
+        height: 15%;
+        font-size: 40px;
+        font-weight: bold;
+        font-family: comic sans MS;
+        text-align: center;}
+        td.aboutTabTeam:hover{
+            background:rgba(100, 100, 100, 0.5);
+            color: springgreen;}
     td.playName{
         width: 10%;
         font-family: comic sans MS;
         font-size: 24px;
         font-weight: bold;
         color: yellow;}
-    
+    td.profile{
+        position: inherit;
+        background-color: black;
+        border: 8px solid black;
+        border-radius: 40px;
+        width: 200px;
+        height: 200px;
+        overflow: hidden;}
+    td.profileName{
+        background: rgba(245, 245, 245, 0.5);
+        border: 3px solid black;
+        border-radius: 20px;
+        padding: 5px 2px 0px 2px;
+        height: 100px;
+        font-weight: bold;
+        font-size: 20px;
+        font-family: comic sans MS;
+        text-shadow: 0px 0px 5px burlywood;
+        text-align: center;
+    }
+    div.socials{
+        position: relative;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        margin: auto;
+        padding-top: 20px;}
+
     /*All of the input types*/
     button.track{
         position: absolute;
@@ -397,10 +471,19 @@
         right: 50%;
         bottom: 20px;
         margin: auto;}
+    img.icon{
+        border: 2px solid black;
+        border-radius: 10px;
+        width: 30px;
+        height: 30px;}
     img.links {
         position: absolute;
         height: 85%;
         right: 60px;}
+    img.profile{
+        width: 100%;
+        height: 100%;
+        object-fit:cover;}
     text.fieldLabel{
         font-size: 14px;}
     text.flexLabel {
@@ -461,6 +544,8 @@
         font-size: 40px;
         font-family: comic sans MS;
         font-weight: bold;}
+
+    ::-webkit-scrollbar {display:none;}
 </style>
 
 <script>
@@ -902,6 +987,17 @@
         hiddenAudio[clip].play();
     }
 
+    function about(name){
+        if (name == 1){
+            document.getElementById("about").style.backgroundColor = ""
+            document.getElementById("aboutGlove").style.display = "block";
+            document.getElementById("aboutTeam").style.display = "none";
+        }
+        if (name == 2){
+            document.getElementById("aboutGlove").style.display = "none";
+            document.getElementById("aboutTeam").style.display = "block";
+        }
+    }
 </script>
 <body onload="loadMe()">
     <span class="settings">
@@ -939,8 +1035,106 @@
                 <tr><td>Richard Lushai<br>&nbsp-Mechanical Co-Lead</td></tr>
             </table>
         </div>
+        <table class="about" id="about">
+            <tr>
+                <td class="aboutTabGlove" onmouseover="about(1)">About da glove</td>
+                <td class="aboutTabTeam" onmouseover="about(2)">About da team</td>
+            </tr>
+            <tr>
+                <td class="aboutGlove" id="aboutGlove">
+                </td>
+                <td class="aboutTeam" id="aboutTeam">
+                    <table class="members">
+                        <tr>
+                            <td class="profile"><img class="profile" src="./zAssets/Person1.jpeg"></td>
+                            <td class="profile"><img class="profile" src="./zAssets/Person2.jpeg"></td>
+                            <td class="profile"><img class="profile" src="./zAssets/Person3.jpeg"></td>
+                            <td class="profile"><img class="profile" src="./zAssets/Person4.jpeg"></td>
+                            <td class="profile"><img class="profile" src="./zAssets/Person5.jpeg"></td>
+                            <td class="profile"><img class="profile" src="./zAssets/Person6.jpeg"></td>
+                        </tr>
+                        <tr>
+                            <td class="profileName">
+                                Brendan Chong
+                                <div class="socials">
+                                <center>
+                                <table>
+                                    <tr>
+                                        <td><img class="icon" src="./zAssets/icon1.png"></td>
+                                        <td><img class="icon" src="./zAssets/icon2.png"></td>
+                                        <td><img class="icon" src="./zAssets/icon3.png"></td>
+                                    </tr>
+                                </table>
+                                </center>
+                                </div>
+                            </td>
+                            <td class="profileName">
+                                Clement Hii
+                                <center>
+                                <table class="socials">
+                                    <tr>
+                                        <td><img class="icon" src="./zAssets/icon1.png"></td>
+                                        <td><img class="icon" src="./zAssets/icon2.png"></td>
+                                        <td><img class="icon" src="./zAssets/icon3.png"></td>
+                                    </tr>
+                                </table>
+                                </center>
+                            </td>
+                            <td class="profileName">
+                                Jacky Kam
+                                <center>
+                                <table class="socials">
+                                    <tr>
+                                        <td><img class="icon" src="./zAssets/icon1.png"></td>
+                                        <td><img class="icon" src="./zAssets/icon2.png"></td>
+                                        <td><img class="icon" src="./zAssets/icon3.png"></td>
+                                    </tr>
+                                </table>
+                                </center>
+                            </td>
+                            <td class="profileName">
+                                Gourang Kulkarni
+                                <center>
+                                <table class="socials">
+                                    <tr>
+                                        <td><img class="icon" src="./zAssets/icon1.png"></td>
+                                        <td><img class="icon" src="./zAssets/icon2.png"></td>
+                                        <td><img class="icon" src="./zAssets/icon3.png"></td>
+                                    </tr>
+                                </table>
+                                </center>
+                            </td>
+                            <td class="profileName">
+                                Samuel Krisetia
+                                <center>
+                                <table class="socials">
+                                    <tr>
+                                        <td><img class="icon" src="./zAssets/icon1.png"></td>
+                                        <td><img class="icon" src="./zAssets/icon2.png"></td>
+                                        <td><img class="icon" src="./zAssets/icon3.png"></td>
+                                    </tr>
+                                </table>
+                                </center>
+                            </td>
+                            <td class="profileName">
+                                Richard Lushai
+                                <center>
+                                <table class="socials">
+                                    <tr>
+                                        <td><img class="icon" src="./zAssets/icon1.png"></td>
+                                        <td><img class="icon" src="./zAssets/icon2.png"></td>
+                                        <td><img class="icon" src="./zAssets/icon3.png"></td>
+                                    </tr>
+                                </table>
+                                </center>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
         <div class="siteContainer">
-            <span class="references">References found here: </span><br>
+            References found here:<br>
             <div class="sites">
                 <text class="references">&emsp;<a href="https://www.w3schools.com/html/default.asp" target="_blank">Learn HTML here</a></text><br>
                 <text class="references">&emsp;<a href="https://www.w3schools.com/css/default.asp" target="_blank">Learn CSS here</a></text><br>
