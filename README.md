@@ -1,1 +1,1 @@
-# MIDI-Controller
+# Synthesizer Glove
