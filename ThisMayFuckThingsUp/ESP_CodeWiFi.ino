@@ -67,8 +67,9 @@ String sensorReadings(){
       sensors_event_t a, g, temp;
       mpu.getEvent(&a, &g, &temp);
   //Return sensor readings
-  Serial.println(Pointer + " " + Middle + " " + Thumb + " " + a.acceleration.x + " " + a.acceleration.y + " " + a.acceleration.z);
-  return String(Pointer + " " + Middle + " " + Thumb + " " + a.acceleration.x + " " + a.acceleration.y + " " + a.acceleration.z);
+  //Serial.println(Pointer + " " + Middle + " " + Thumb + " " + a.acceleration.x + " " + a.acceleration.y + " " + a.acceleration.z);
+  //return String(Pointer + " " + Middle + " " + Thumb + " " + a.acceleration.x + " " + a.acceleration.y + " " + a.acceleration.z);
+  return String("Hopefully?");
 }
 
 /*--------------------------------------------------*/
