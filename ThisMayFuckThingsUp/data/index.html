@@ -1,0 +1,258 @@
+﻿<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glove Receiver</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<script src="Tone.js"></script>
+<script src="script.js"></script>
+
+<body onload="loadMe(), wsConnect()">
+    <span class="settings">
+        <img class="gear" src="./zSetting.png" onclick="openSettings()">
+        <img class="links" src="./zDrip.png" onclick="openRefs()">
+        <div class="settings" id="settings">
+            <center>Change Volume</center><br>
+                <text class="fieldLabel">Max Vol (Decibels)</text>
+                <input type="text" class="fieldInput" id="newMaxVol" onchange="setMaxVol(this.value)"> db<br>
+                <text class="fieldLabel">Min Vol (Decibels)</text>
+                <input type="text" class="fieldInput" id="newMinVol" onchange="setMinVol(this.value)"> db<br>
+            <center>Change BPM</center>
+            <center><text style="font-size: 14px; font-weight: bold;">BPM <text class="hiddenText" onclick="playMe(0)">cannot</text> be <= 0</text></center><br>
+                <text class="fieldLabel">Max BPM (BPM)</text>
+                <input type="text" class="fieldInput" id="newMaxBPM" onchange="setMaxBPM(this.value)"> bpm<br>
+                <text class="fieldLabel">Max BPM (BPM)</text>
+                <input type="text" class="fieldInput" id="newMinBPM" onchange="setMinBPM(this.value)"> bpm
+        </div>
+    </span>
+    <div class="references" id="references">
+        <div class="thank">
+            <div class="thankOne">A very special thank you to the team members who all put in 
+            hours of blood, sweat, shit and cum to see this project come to life. 
+            From concept, to software, pen and paper to physical model, these members 
+            have all shown true effort and dedication to complete this project.</div>
+            <img class="glove" src="./zGlov.jpg">
+            <table class="thankTwo">
+                <tr><td><center><text style="font-size: 20px;">Da Team</text></center></td></tr>
+                <tr><td>Brendan Chong<br>&nbsp-Mechanical Lead</td></tr>
+                <tr><td>Clement Hii<br>&nbsp-'Fearless' Leader</td></tr>
+                <tr><td>Jacky Kam<br>&nbsp-Software Lead</td></tr>
+                <tr><td>Samuel Krisetia<br>&nbsp-Software Co-Lead</td></tr>
+                <tr><td>Gourang Kulkarni<br>&nbsp-Gym Rep</td></tr>
+                <tr><td>Richard Lushai<br>&nbsp-Mechanical Co-Lead</td></tr>
+            </table>
+        </div>
+        <table class="about" id="about">
+            <tr>
+                <td class="aboutTabGlove" onmouseover="about(1)">About da glove</td>
+                <td class="aboutTabTeam" onmouseover="about(2)">About da team</td>
+            </tr>
+            <tr>
+                <td class="aboutGlove" id="aboutGlove">
+                </td>
+                <td class="aboutTeam" id="aboutTeam">
+                    <table class="members">
+                        <tr>
+                            <td class="profile"><img class="profile" src="./zPerson1.jpeg"></td>
+                            <td class="profile"><img class="profile" src="./zPerson2.jpg"></td>
+                            <td class="profile"><img class="profile" src="./zPerson3.jpeg"></td>
+                            <td class="profile"><img class="profile" src="./zPerson4.jpeg"></td>
+                            <td class="profile"><img class="profile" src="./zPerson5.jpg"></td>
+                            <td class="profile"><img class="profile" src="./zPerson6.jpg"></td>
+                        </tr>
+                        <tr>
+                            <td class="profileName">
+                                Brendan Chong
+                                <div class="socials">
+                                <center>
+                                <table>
+                                    <tr>
+                                        <td><img class="icon" src="./zIG.png"></td>
+                                        <td><img class="icon" src="./zFB.png"></td>
+                                        <td><img class="icon" src="./zLI.png"></td>
+                                    </tr>
+                                </table>
+                                </center>
+                                </div>
+                            </td>
+                            <td class="profileName">
+                                Clement Hii
+                                <center>
+                                <table class="socials">
+                                    <tr>
+                                        <td><img class="icon" src="./zIG.png"></td>
+                                        <td><img class="icon" src="./zFB.png"></td>
+                                        <td><img class="icon" src="./zLI.png"></td>
+                                    </tr>
+                                </table>
+                                </center>
+                            </td>
+                            <td class="profileName">
+                                Jacky Kam
+                                <center>
+                                <table class="socials">
+                                    <tr>
+                                        <td><img class="icon" src="./zIG.png"></td>
+                                        <td><img class="icon" src="./zFB.png"></td>
+                                        <td><img class="icon" src="./zLI.png"></td>
+                                    </tr>
+                                </table>
+                                </center>
+                            </td>
+                            <td class="profileName">
+                                Gourang Kulkarni
+                                <center>
+                                <table class="socials">
+                                    <tr>
+                                        <td><img class="icon" src="./zIG.png"></td>
+                                        <td><img class="icon" src="./zFB.png"></td>
+                                        <td><img class="icon" src="./zLI.png"></td>
+                                    </tr>
+                                </table>
+                                </center>
+                            </td>
+                            <td class="profileName">
+                                Samuel Krisetia
+                                <center>
+                                <table class="socials">
+                                    <tr>
+                                        <td><img class="icon" src="./zIG.png"></td>
+                                        <td><img class="icon" src="./zFB.png"></td>
+                                        <td><img class="icon" src="./zLI.png"></td>
+                                    </tr>
+                                </table>
+                                </center>
+                            </td>
+                            <td class="profileName">
+                                Richard Lushai
+                                <center>
+                                <table class="socials">
+                                    <tr>
+                                        <td><img class="icon" src="./zIG.png"></td>
+                                        <td><img class="icon" src="./zFB.png"></td>
+                                        <td><img class="icon" src="./zLI.png"></td>
+                                    </tr>
+                                </table>
+                                </center>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <div class="siteContainer">
+            References found here:<br>
+            <div class="sites">
+                <text class="references">&emsp;<a href="https://www.w3schools.com/html/default.asp" target="_blank">Learn HTML here</a></text><br>
+                <text class="references">&emsp;<a href="https://www.w3schools.com/css/default.asp" target="_blank">Learn CSS here</a></text><br>
+                <text class="references">&emsp;<a href="https://www.w3schools.com/js/default.asp" target="_blank">Learn JavaScript here</a></text><br>
+                <text class="references">&emsp;<a href="https://tonejs.github.io/" target="_blank">Tone.js API library</a></text><br>
+                <text class="references">&emsp;<a href="https://www.guitarland.com/MusicTheoryWithToneJS/PlayNote.html" target="_blank">Example: Editable Volume/Bpm/Frequency</a></text><br>
+                <text class="references">&emsp;<a href="http://sites.music.columbia.edu/cmc/courses/g6611/spring2018/week3/index.html" target="_blank">Example: Start/Stop using Oscillator</a></text><br>
+                <text class="references">&emsp;<a href="https://github.com/Team-06-Haptic-Glove/MIDI-Controller" target="_blank">Team Github</a></text>
+            </div>
+        </div>
+    </div>
+    <span class="main">
+        <!--Divs to display current flex sensor readings-->
+        <div class="flex1">
+            <text class="flexLabel">Volume (Thumb)</text>
+            <div class="flexBarOut">
+                <div class="flexBarIn" id="pointerBar"></div>
+            </div>
+            <div class="flexNum" id="flexNum1"></div>
+        </div>
+        <div class="flex2">
+            <text class="flexLabel">Pitch  (Pointer)</text>
+            <div class="flexBarOut">
+                <div class="flexBarIn" id="middleBar"></div>
+            </div>
+            <div class="flexNum" id="flexNum2"></div>
+        </div>
+        <div class="flex3">
+            <text class="flexLabel">Beats Per Min (Middle)</text>
+            <div class="flexBarOut">
+                <div class="flexBarIn" id="thumbBar"></div>
+            </div>
+            <div class="flexNum" id="flexNum3"></div>
+        </div>
+
+        <div class="displays">
+            <!--Interface for play/pause/stop-->
+            <div class="button1">
+                <!--Global Play/Stop for all tracks-->
+                <div class="play" id="play"></div>
+                <text class="play">Play</text>
+                <div class="stop" id="stop"></div>
+                <text class="stop">Stop</text>
+                <!--Displays the current track being edited-->
+                <div class="trackDisplay">
+                    <text class="trackDisplayFluff">Current Track:</text>
+                    <text class="trackDisplay" id="trackDisplay">Buffer</text>
+                </div>
+            </div>
+
+            <!--Interface for start/stop record-->>
+            <div class="button2"></div>
+
+            <!--Interface for current mode toggle-->>
+            <div class="button3"></div>
+        </div>
+            <!--Table to display track information-->
+            <table class="playStop">
+                <!--Top row displays track names-->
+                <tr class="playName">
+                    <td class="playName">Buffer</td>
+                    <td class="playName">Kick</td>
+                    <td class="playName">Snare</td>
+                    <td class="playName">Synth 1</td>
+                    <td class="playName">Synth 2</td>
+                    <td class="playName">Synth 3</td>
+                    <td class="playName">Synth 4</td>
+                    <td class="playName">Synth 5</td>
+                    <td class="playName">Osc 1</td>
+                    <td class="playName">Osc 2</td>
+                </tr>
+                <!--Middle row lights up when track is active (not being edited)-->
+                <tr class="playLight">
+                    <td class="playLight"><div class="playLight" id="playLight0"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight1"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight2"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight3"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight4"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight5"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight6"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight7"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight8"></div></td>
+                    <td class="playLight"><div class="playLight" id="playLight9"></div></td>
+                </tr>
+                <!--Bottom row has bars displaying current volume-->
+                <tr class="playVol">
+                    <td class="playVol"></td>
+                    <td class="playVol"><div class="playVol" id="playVol1"><div class="playVolInner" id="playVolInner1"></div></div></td>
+                    <td class="playVol"><div class="playVol" id="playVol2"><div class="playVolInner" id="playVolInner2"></div></div></td>
+                    <td class="playVol"><div class="playVol" id="playVol3"><div class="playVolInner" id="playVolInner3"></div></div></td>
+                    <td class="playVol"><div class="playVol" id="playVol4"><div class="playVolInner" id="playVolInner4"></div></div></td>
+                    <td class="playVol"><div class="playVol" id="playVol5"><div class="playVolInner" id="playVolInner5"></div></div></td>
+                    <td class="playVol"><div class="playVol" id="playVol6"><div class="playVolInner" id="playVolInner6"></div></div></td>
+                    <td class="playVol"><div class="playVol" id="playVol7"><div class="playVolInner" id="playVolInner7"></div></div></td>
+                    <td class="playVol"><div class="playVol" id="playVol8"><div class="playVolInner" id="playVolInner8"></div></div></td>
+                    <td class="playVol"><div class="playVol" id="playVol9"><div class="playVolInner" id="playVolInner9"></div></div></td>
+                </tr>
+            </table>
+
+
+        <!--Inputs to simulate flex sensors, remove later?-->
+        <input type="range" class="slider1" id="thumb" min="1" max="100" value="1" step="1" oninput="setFlex(thumb, value)">
+        <input type="range" class="slider2" id="pointer" min="1" max="100" value="1" step="1" oninput="setFlex(pointer, value)">
+        <input type="range" class="slider3" id="middle" min="0" max="100" value="0" step="1" oninput="setFlex(middle, value)">
+
+        <!--Button to activate oscillator-->
+        <button class="notePress" onclick="playTrack()">Play/Stop</button>
+        <button class="notePress3" onclick="playSound()">globplay</button>
+        <button class="ChangeDown" onclick="playDrum()">LastTrack</button>
+        <button class="notePress2" onclick="changeTrack()">ChangeTrack</button>
+    </span>
+</body>
+</html>

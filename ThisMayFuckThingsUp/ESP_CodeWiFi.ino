@@ -1,7 +1,7 @@
 #include <WiFi.h>
 #include <Wire.h>
 #include <SPIFFS.h>
-#include <ESPAsyncTCP.h>
+#include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
@@ -33,26 +33,6 @@ Adafruit_MPU6050 mpu;
 
 /*--------------------------------------------------*/
 /*----------------DECLARE FUNCTIONS-----------------*/
-//Callback: send webpages
-//Send homepage
-void onIndexRequest(AsyncWebServerRequest *request){
-  IPAddress remote_ip = request->client()->remoteIP();
-  Serial.println("[" + remote_ip.toString() + "] HTTP GET request of " + request->url());
-  request->send(SPIFFS, "/htmlTest.html", "text/html");
-}
-//Send stylesheet
-void onCSSRequest(AsyncWebServerRequest *request){
-  IPAddress remote_ip = request->client()->remoteIP();
-  Serial.println("[" + remote_ip.toString() + "] HTTP GET request of " + request->url());
-  request->send(SPIFFS, "/cssTest.css", "text/css");
-}
-//Send javaScript
-void onJavaRequest(AsyncWebServerRequest *request){
-  IPAddress remote_ip = request->client()->remoteIP();
-  Serial.println("[" + remote_ip.toString() + "] HTTP GET request of " + request->url());
-  request->send(SPIFFS, "/javaTest.js", "text/javascript");
-}
-
 //Create a string using sensor data
 String sensorReadings(){
   //Get Flex Sensor inputs
@@ -94,7 +74,7 @@ void setup(){
      Serial.println("An Error has occurred while mounting SPIFFS");
      return;
   }
-
+ /*
   //MPU 6050 setup
     while (!Serial)
         delay(10); //Pause Zero, Leonardo, etc until serial console opens
@@ -107,7 +87,7 @@ void setup(){
                 }
             }
         Serial.println("MPU6050 Found!");
-
+  */
   //Begin WiFi web server
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
@@ -117,16 +97,79 @@ void setup(){
   Serial.println(WiFi.localIP());
 
   //On HTTP request for root, provide htmlTest.html
-  server.on("/", HTTP_GET, onIndexRequest);
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/index.html", String(), false, processor);
+  });;
   //On HTTP request for stylesheet, provide cssTest.html
-  server.on("/cssTest.css", HTTP_GET, onCSSRequest);
-  //On HTTP request for javascript, provide javaTest.html
-  server.on("/javaTest.js", HTTP_GET, onJavaRequest);
+  server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/style.css", "text/css");
+  });
+  //On HTTP request for javascript, provide javaTest.js
+  server.on("/script.js", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/script.js", "text/javascript");
+  });
+  //On HTTP request for Tone, provide Tone.js
+  server.on("/Tone.js", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/Tone.js", "text/javascript");
+  });
   //On HTTP request for sensor readings, provide string
   server.on("/sensors", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send_P(200, "text/plain", sensorReadings().c_str());
   });
 
+  //Images
+  server.on("/zWood", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/zWood.jpeg", "image/jpeg");
+  });
+  server.on("/zWood2", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/zWood2.jpeg", "image/jpeg");
+  });
+  server.on("/zBlackground", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/zBlackground.jpg", "image/jpg");
+  });
+  server.on("/zMetal", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/zMetal.jpeg", "image/jpeg");
+  });
+  server.on("/zBlackground", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/zSpaceground.jpg", "image/jpg");
+  });
+  server.on("/zDrip", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/zDrip.png", "image/png");
+  });
+  server.on("/zSetting", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/zSetting.png", "image/png");
+  });
+  server.on("/zGlov", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/zGlov.jpg", "image/jpg");
+  });
+  server.on("/zFB", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/zFB.png", "image/png");
+  });
+  server.on("/zIG", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/zIG.png", "image/png");
+  });
+  server.on("/zLI", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/zLI.png", "image/png");
+  });
+  server.on("/zPerson1", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/zPerson1.jpeg", "image/jpeg");
+  });
+  server.on("/zPerson2", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/zPerson2.jpe", "image/jpg");
+  });
+  server.on("/zPerson3", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/zPerson3.jpeg", "image/jpeg");
+  });
+  server.on("/zPerson4", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/zPerson4.jpeg", "image/jpeg");
+  });
+  server.on("/zPerson5", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/zPerson5.jpg", "image/jpg");
+  });
+  server.on("/zPerson6", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/zPerson6.jpg", "image/jpg");
+  });
+  
   //Begin Webserver
   server.begin(); //In search bar type http://#yourIP#/htmlTest
 }
