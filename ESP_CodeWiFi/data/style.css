@@ -8,7 +8,7 @@
         border: 16px solid #313537;
         border-radius: 36px;
         border-bottom-right-radius: 80px;
-        background-color: grey;
+        background-color: rgb(39, 39, 39);
         left: 0px;
         right: 0px;
         top: 0px;
@@ -355,7 +355,14 @@
         right: 0px;
         bottom: 0px;
         margin: auto;
-        padding-top: 20px;}
+        padding-top: 25px;}
+    div.socialsGK{
+        position: relative;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        margin: auto;
+        padding-top: -10px;}
 
     /*All of the input types*/
     button.track{
@@ -440,6 +447,7 @@
     /*Embellishments such as text and images*/
     img.gear {
         position: absolute;
+        background-color: chartreuse;
         height: 90%;
         right: 5px}
     img.glove {
