@@ -38,7 +38,7 @@
         showingRef = false;
         volume = -15;
         maxVol = 20;
-        minVol = -15;
+        minVol = -40;
         hertz = 0;
         maxHertz = 1000;
         minHertz = 0;
