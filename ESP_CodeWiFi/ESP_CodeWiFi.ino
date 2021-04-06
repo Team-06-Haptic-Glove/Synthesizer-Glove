@@ -25,8 +25,6 @@ Adafruit_MPU6050 mpu;
         int Map1 = 18;  //Mappable Input 1
         int Map2 = 17;  //Mappable Input 2
         int Map3 = 16;  //Mappable Input 3
-    //Richard Testing
-        int Switch = 13;
 
 //Inputs
 //Outputs
@@ -52,7 +50,7 @@ String sensorReadings(){
   //Return sensor readings
   //Serial.println(Pointer + " " + Middle + " " + Thumb + " " + a.acceleration.x + " " + a.acceleration.y + " " + a.acceleration.z);
   //return String(Pointer + " " + Middle + " " + Thumb + " " + a.acceleration.x + " " + a.acceleration.y + " " + a.acceleration.z);
-  return String("YEAAAA BABBYYYYY);
+  return String("YEAAAA BABBYYYYY Subscribe to TTW on YouTube!");
 }
 
 /*--------------------------------------------------*/
